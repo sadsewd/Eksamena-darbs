@@ -38,6 +38,7 @@ export const Header = styled.header`
   export const LoginButton = styled(Link)`
   padding: .5rem 2rem;
   background: ${darkBlue};
+  color: white;
   ${borderRadius}
   float: right;
   margin-right: 3rem;
@@ -50,6 +51,9 @@ export const Header = styled.header`
   color: black;
   &::placeholder{
     color: grey;
+  }
+  &:focus{
+    outline: none;
   }
   `;
 
