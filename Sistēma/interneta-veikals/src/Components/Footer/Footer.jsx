@@ -1,7 +1,7 @@
 import React from 'react';
 import * as S from "./footerStyle.js";
 
-const FooterComp = () => {
+const Footer = () => {
     return ( 
     <S.Footer>
         Kārļa Lācīša eksamena darbs "Interneta veikals" 2023
@@ -9,6 +9,6 @@ const FooterComp = () => {
      );
 }
  
-export default FooterComp
+export default Footer
 ;
 

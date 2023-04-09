@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { borderRadius, darkBlue } from "../../GlobalCSSVariables";
+import { borderRadius, orangeVar } from "../../GlobalCSSVariables";
 
 export const Header = styled.header`
   background: #282828;
@@ -15,7 +15,7 @@ export const Header = styled.header`
   color: #c8c8c8;
   transition: 0.5s;
   &:hover{
-    box-shadow: 0px 5px ${darkBlue};
+    box-shadow: 0px 5px ${orangeVar};
   }
   `
 
@@ -37,7 +37,7 @@ export const Header = styled.header`
 
   export const LoginButton = styled(Link)`
   padding: .5rem 2rem;
-  background: ${darkBlue};
+  background: ${orangeVar};
   color: white;
   ${borderRadius}
   float: right;
@@ -48,7 +48,9 @@ export const Header = styled.header`
   width: 50%;
   height: 2.5rem;
   ${borderRadius}
-  color: black;
+  color: white;
+  background: #3b3b3b;
+  border: none;
   &::placeholder{
     color: grey;
   }

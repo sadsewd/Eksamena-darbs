@@ -7,6 +7,7 @@ const Header = () => {
         <>
         <S.Header>
             <S.ButtonContainer>
+                <img src="../" alt="" />
                 <S.HeaderButton>Elektrotehnika</S.HeaderButton>
                 <S.HeaderButton>Mēbeles</S.HeaderButton>
                 <S.HeaderButton>Dārzam</S.HeaderButton>
@@ -15,7 +16,7 @@ const Header = () => {
             </S.ButtonContainer>
             <S.SideFunctionsContainer>
                 <SearchBar />
-                <S.LoginButton>
+                <S.LoginButton to={"/login"}>
                     Ielogoties
                 </S.LoginButton>
             </S.SideFunctionsContainer>
