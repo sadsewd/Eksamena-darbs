@@ -31,7 +31,7 @@ export const LoginContainer = styled.div`
   &&{
     border-color: ${orangeVar};
     color: ${orangeVar};
-    width: 80%;
+    width: 35vw;
     height: 5vh;
     &:hover{
       border-color: ${orangeVar};
@@ -41,8 +41,7 @@ export const LoginContainer = styled.div`
 
   export const Input = styled(TextField)`
   &&{
-  width: 80%;
-  height: 5vh;
+  width: 35vw;
   & label.Mui-focused {
     color: ${orangeVar};
   }
