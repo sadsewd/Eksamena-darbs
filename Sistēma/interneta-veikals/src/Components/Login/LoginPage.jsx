@@ -17,9 +17,10 @@ const LoginPage = () => {
         <>
         <S.LoginContainer>
             <S.Form action="">
-                <S.Text type="text" variant="outlined" label='Lietotājvārds' onChange={handleUsernameInput}/>
-                <S.Text type="password" variant="outlined" label='Parole' onChange={handlePasswordInput}/>
-                <S.SButton variant="outlined" type="submit">Ielogoties</S.SButton>
+                <S.Text>Ielogošanās</S.Text>
+                <S.Input type="text" variant="outlined" label='Lietotājvārds' onChange={handleUsernameInput}/>
+                <S.Input sx={{mt:"10px"}} type="password" variant="outlined" label='Parole' onChange={handlePasswordInput}/>
+                <S.SButton sx={{mt:"10px"}} variant="outlined" type="submit">Ielogoties</S.SButton>
                 <S.SButton variant="outlined" type="submit">Reģistrēties</S.SButton>
             </S.Form>
         </S.LoginContainer>

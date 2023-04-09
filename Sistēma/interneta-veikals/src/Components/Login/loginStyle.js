@@ -22,7 +22,7 @@ export const LoginContainer = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 30px 0px;
+    gap: 20px
   `;
 
   //MUI komponentēm ir nepieciešam palielināt specificitāti, to var izdarīt atkārtotojot klasi lietotjot &&{}
@@ -39,7 +39,7 @@ export const LoginContainer = styled.div`
   }
   `;
 
-  export const Text = styled(TextField)`
+  export const Input = styled(TextField)`
   &&{
   width: 80%;
   height: 5vh;
@@ -65,3 +65,9 @@ export const LoginContainer = styled.div`
   }
 }
 `;
+
+export const Text = styled.h2`
+color: ${orangeVar};
+`;
+
+
