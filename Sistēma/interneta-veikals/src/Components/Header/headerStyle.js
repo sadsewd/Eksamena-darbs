@@ -42,12 +42,19 @@ export const Header = styled.header`
   ${borderRadius}
   float: right;
   margin-right: 3rem;
+  transition: 0.3s ease-in-out;
+
+  &:hover{
+    color: black;
+    background: #ffca00;
+  }
   `;
 
   export const StyledInput = styled.input`
   width: 50%;
   height: 2.5rem;
   ${borderRadius}
+  padding: .5rem;
   color: white;
   background: #3b3b3b;
   border: none;
