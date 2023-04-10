@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 /* Remove default margin */
 body,
@@ -21,9 +21,9 @@ dd {
   margin: 0;
 }
 
-body{
- background: #131313;
- font-family: 'Roboto', sans-serif;
+body {
+  background: #131313;
+  font-family: 'Roboto', sans-serif;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
@@ -44,7 +44,7 @@ body {
   line-height: 1.5;
 }
 
-a{
+a {
   text-decoration: none;
   color: #c8c8c8;
 }
@@ -67,9 +67,9 @@ select {
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
-   scroll-behavior: auto;
+    scroll-behavior: auto;
   }
-  
+
   *,
   *::before,
   *::after {

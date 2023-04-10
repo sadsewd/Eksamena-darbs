@@ -1,11 +1,11 @@
 import AdminHeader from './AdminHeader';
 
 const AdminHome = () => {
-    return ( 
-        <>
-        <AdminHeader/>
-        </>
-     );
-}
- 
+  return (
+    <>
+      <AdminHeader />
+    </>
+  );
+};
+
 export default AdminHome;
