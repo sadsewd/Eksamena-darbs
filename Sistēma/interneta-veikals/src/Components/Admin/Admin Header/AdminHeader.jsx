@@ -1,5 +1,5 @@
 import React from 'react';
-import * as S from './headerStyle';
+import * as S from './AdminHeaderStyle';
 
 const AdminHeader = () => {
   return (
@@ -9,4 +9,4 @@ const AdminHeader = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;
