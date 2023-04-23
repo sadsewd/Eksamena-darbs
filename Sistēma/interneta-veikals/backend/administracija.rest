@@ -1,0 +1,19 @@
+GET http://localhost:5001/administracija
+
+###
+
+POST http://localhost:5001/administracija
+Content-Type: application/x-www-form-urlencoded
+
+lietotajvards=tests2&parole=tests3
+
+###
+
+DELETE http://localhost:5001/administracija/17
+
+###
+
+PUT http://localhost:5001/administracija/17
+Content-Type: application/x-www-form-urlencoded
+
+lietotajvards=TESTS&parole=bruh2

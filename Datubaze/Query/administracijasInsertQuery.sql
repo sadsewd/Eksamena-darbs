@@ -1,0 +1,1 @@
+INSERT INTO administracija (lietotajvards, parole) VALUES ("admin", "parole");
