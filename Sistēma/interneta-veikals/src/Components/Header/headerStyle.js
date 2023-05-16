@@ -26,7 +26,7 @@ export const ButtonContainer = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
-  gap: 3rem;
+  gap: 2rem;
 `;
 
 export const SideFunctionsContainer = styled.div`

@@ -17,3 +17,7 @@ PUT http://localhost:5001/administracija/17
 Content-Type: application/x-www-form-urlencoded
 
 lietotajvards=TESTS&parole=bruh2
+###
+
+GET http://localhost:5001/administracija/10
+Content-Type: application/x-www-form-urlencoded
