@@ -21,3 +21,8 @@ lietotajvards=TESTS&parole=bruh2
 
 GET http://localhost:5001/administracija/10
 Content-Type: application/x-www-form-urlencoded
+
+###
+
+GET http://localhost:5001/adminLogin/admin2/parole2
+Content-Type: application/x-www-form-urlencoded

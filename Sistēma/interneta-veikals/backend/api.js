@@ -2,9 +2,12 @@ import express from 'express';
 import mysql from 'mysql';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(cors());
+dotenv.config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -19,6 +22,34 @@ const db = mysql.createConnection({
 app.listen(5001, () => {
   console.log('Connected to backend.');
 });
+/*Login*/
+
+app.get('/klientsLogin/:lietotajvards/:parole', (req, res) => {
+  const lietotajvards = req.params.lietotajvards;
+  const parole = req.params.parole;
+  const jwtToken = jwt.sign({ lietotajvards: lietotajvards }, process.env.JWT_KEY);
+
+  const query = 'SELECT * FROM administracija WHERE parole = ? AND lietotajvards = ?';
+  db.query(query, [parole, lietotajvards], (err, data) => {
+    if (err) return res.json(err);
+    res.set({ token: jwtToken });
+    res.json(data);
+  });
+});
+
+app.get('/adminLogin/:lietotajvards/:parole', (req, res) => {
+  const lietotajvards = req.params.lietotajvards;
+  const parole = req.params.parole;
+  const jwtToken = jwt.sign({ lietotajvards: lietotajvards }, process.env.JWT_KEY);
+
+  const query = 'SELECT * FROM administracija WHERE parole = ? AND lietotajvards = ?';
+  db.query(query, [parole, lietotajvards], (err, data) => {
+    if (err) return res.json(err);
+    res.set({ token: jwtToken });
+    res.json(data);
+  });
+});
+/*Login beigas*/
 
 /*ADMINISTRĀCIJA*/
 
