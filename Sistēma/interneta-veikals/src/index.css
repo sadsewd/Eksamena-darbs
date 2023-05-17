@@ -46,7 +46,13 @@ body {
 
 a {
   text-decoration: none;
-  color: #c8c8c8;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
 }
 
 /* Make images easier to work with */

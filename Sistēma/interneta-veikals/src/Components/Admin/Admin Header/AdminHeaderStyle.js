@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { headerGray, TextColor } from '../../../GlobalCSSVariables';
 
 export const Header = styled.header`
-  background: #282828;
+  background: ${headerGray};
   width: 100vw;
-  color: #c8c8c8;
-  height: 6.5rem;
+  color: ${TextColor};
+  height: 5rem;
   display: flex;
   align-items: center;
 `;

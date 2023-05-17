@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { FormControl, InputLabel, MenuItem, Paper, Select } from '@mui/material';
+import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as S from './databasestyle';
 
 const Database = () => {
   const [table, setTable] = useState('');
@@ -46,6 +47,7 @@ const Database = () => {
   const DeleteData = async id => {
     try {
       await axios.delete(`http://localhost:5001/${table}/${id}`);
+      FetchData();
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +63,6 @@ const Database = () => {
 
   const handleDelete = event => {
     DeleteData(event.target.value);
-    FetchData();
   };
 
   const handleCreate = () => {
@@ -72,15 +73,15 @@ const Database = () => {
 
   const Table = () => {
     return (
-      <>
-        <table>
+      <S.StyledTableContainer>
+        <S.StyledTable>
           <tbody>
-            <tr>
+            <S.KeysRow>
               {keys.map((key, index) => {
                 return <th key={index}>{key}</th>;
               })}
               <th>Rediģēšanas opcijas</th>
-            </tr>
+            </S.KeysRow>
             {data.map((datakey, index) => {
               return (
                 <tr key={index}>
@@ -88,28 +89,30 @@ const Database = () => {
                     return <th key={i}>{datakey[keys[i]]}</th>;
                   })}
                   <th>
-                    <button value={datakey.id} onClick={handleEdit}>
-                      Mainīt
-                    </button>
-                    <button value={datakey.id} onClick={handleDelete}>
-                      Dzēst
-                    </button>
+                    <ButtonGroup>
+                      <Button value={datakey.id} onClick={handleEdit}>
+                        Mainīt
+                      </Button>
+                      <Button value={datakey.id} onClick={handleDelete}>
+                        Dzēst
+                      </Button>
+                    </ButtonGroup>
                   </th>
                 </tr>
               );
             })}
           </tbody>
-        </table>
-      </>
+        </S.StyledTable>
+      </S.StyledTableContainer>
     );
   };
 
   return (
     <>
       <AdminHeader />
-      <FormControl sx={{ mt: '20px', width: '90%', ml: '5%' }}>
-        <InputLabel sx={{}}>Tabula</InputLabel>
-        <Select value={table} label="Age" onChange={handleChange} sx={{}}>
+      <FormControl sx={{ mt: '2rem', width: '90%', ml: '5%' }}>
+        <InputLabel sx={{ color: 'white' }}>Tabula</InputLabel>
+        <S.StyledSelect labelWidth={600} value={table} label="Age" onChange={handleChange} sx={{}}>
           <MenuItem value={'administracija'}>Administracija</MenuItem>
           <MenuItem value={'groza_produkts'}>Groza produkts</MenuItem>
           <MenuItem value={'grozs'}>Grozs</MenuItem>
@@ -125,10 +128,16 @@ const Database = () => {
           <MenuItem value={'produkti'}>Produkti</MenuItem>
           <MenuItem value={'variacijas'}>Variacijas</MenuItem>
           <MenuItem value={'variacijas_dati'}>Variacijas dati</MenuItem>
-        </Select>
-        <button onClick={handleCreate}>Izveidot Ierakstu</button>
+        </S.StyledSelect>
+        {table ? (
+          <Button variant="outlined" sx={{ mt: '1rem' }} onClick={handleCreate}>
+            Izveidot Ierakstu
+          </Button>
+        ) : (
+          ''
+        )}
       </FormControl>
-      {data ? <Table /> : <h1>Fetching data</h1>}
+      {table ? <Table /> : ''}
     </>
   );
 };

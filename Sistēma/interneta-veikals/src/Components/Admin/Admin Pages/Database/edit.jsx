@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminHeader from '../../Admin Header/AdminHeader';
+import { Button, TextField } from '@mui/material';
+import * as S from './databasestyle';
 
 let tempObj = {};
 let tempValue;
@@ -76,13 +78,7 @@ const Edit = () => {
   return (
     <>
       <AdminHeader />
-      <form
-        style={{
-          marginTop: '2rem',
-          marginLeft: '2rem',
-          color: 'white',
-        }}
-      >
+      <S.StyledForm>
         {keys.map((key, index) => {
           if (key === 'id') {
             isreadonly = true;
@@ -93,13 +89,25 @@ const Edit = () => {
             <div key={index}>
               <label>{key}</label>
               <br />
-              <input name={key} placeholder={data[key]} onChange={handleInput} readOnly={isreadonly} />
+              <S.Input
+                name={key}
+                placeholder={data[key]}
+                onChange={handleInput}
+                InputProps={{
+                  readOnly: isreadonly,
+                }}
+                variant="outlined"
+              />
             </div>
           );
         })}
-        <button onClick={handleSubmit}>Iesniegt</button>
-        <button onClick={handleCancel}>Atcelt</button>
-      </form>
+        <Button variant="outlined" onClick={handleSubmit}>
+          Iesniegt
+        </Button>
+        <Button variant="outlined" onClick={handleCancel}>
+          Atcelt
+        </Button>
+      </S.StyledForm>
     </>
   );
 };

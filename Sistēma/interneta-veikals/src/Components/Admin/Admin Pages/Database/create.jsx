@@ -2,6 +2,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
+import { Button, TextField } from '@mui/material';
+import * as S from './databasestyle';
 
 let tempObj = {};
 let tempValue;
@@ -66,21 +68,35 @@ const Create = () => {
   return (
     <>
       <AdminHeader />
-      <h1>Izveidot jaunu vienumu tabulā {table}</h1>
-      {keys.map((key, index) => {
-        if (key === 'id') {
-          display = 'none';
-        } else {
-          display = 'default';
-        }
-        return (
-          <div key={index}>
-            <input name={key} placeholder={key} onChange={handleInput} style={{ display: `${display}` }} />
-          </div>
-        );
-      })}
-      <button onClick={handleSubmit}>Iesniegt</button>
-      <button onClick={handleCancel}>Atcelt</button>
+      <S.StyledContainer>
+        <S.Cotainer>
+          <h1 style={{ color: 'white' }}>Izveidot jaunu vienumu tabulā {table}</h1>
+          {keys.map((key, index) => {
+            if (key === 'id') {
+              display = 'none';
+            } else {
+              display = 'default';
+            }
+            return (
+              <div key={index}>
+                <S.Input
+                  name={key}
+                  placeholder={key}
+                  onChange={handleInput}
+                  sx={{ display: display }}
+                  variant="outlined"
+                />
+              </div>
+            );
+          })}
+          <Button variant="outlined" onClick={handleSubmit}>
+            Iesniegt
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            Atcelt
+          </Button>
+        </S.Cotainer>
+      </S.StyledContainer>
     </>
   );
 };
