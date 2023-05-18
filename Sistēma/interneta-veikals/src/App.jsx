@@ -7,6 +7,7 @@ import AdminHome from './Components/Admin/Admin Pages/Home/AdminHome';
 import Database from './Components/Admin/Admin Pages/Database/database';
 import Edit from './Components/Admin/Admin Pages/Database/edit';
 import Create from './Components/Admin/Admin Pages/Database/create';
+import { RequireAuth } from 'react-auth-kit';
 
 function App() {
   return (
@@ -15,10 +16,42 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
         <Route exact path="/login" element={<LoginPage />} />
         <Route exact path="/admin" element={<AdminLogin />} />
-        <Route exact path="/admin/home" element={<AdminHome />} />
-        <Route exact path="/admin/database" element={<Database />} />
-        <Route exact path="/admin/database/edit/:table/:id" element={<Edit />} />
-        <Route exact path="/admin/database/create/:table/" element={<Create />} />
+        <Route
+          exact
+          path="/admin/home"
+          element={
+            <RequireAuth loginPath="/admin">
+              <AdminHome />
+            </RequireAuth>
+          }
+        />
+        <Route
+          exact
+          path="/admin/database"
+          element={
+            <RequireAuth loginPath="/admin">
+              <Database />
+            </RequireAuth>
+          }
+        />
+        <Route
+          exact
+          path="/admin/database/edit/:table/:id"
+          element={
+            <RequireAuth loginPath="/admin">
+              <Edit />
+            </RequireAuth>
+          }
+        />
+        <Route
+          exact
+          path="/admin/database/create/:table/"
+          element={
+            <RequireAuth loginPath="/admin">
+              <Create />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </Router>
   );
