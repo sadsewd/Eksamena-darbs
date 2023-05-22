@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
+import { Button, ButtonGroup, FormControl, InputLabel, MenuItem, Paper, Select, TableContainer } from '@mui/material';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import * as S from './databasestyle';
 
 const Database = () => {
@@ -71,24 +76,36 @@ const Database = () => {
     }
   };
 
-  const Table = () => {
+  const TableComp = () => {
     return (
-      <S.StyledTableContainer>
-        <S.StyledTable>
-          <tbody>
-            <S.KeysRow>
+      <TableContainer
+        sx={{ width: '100vw', display: 'flex', alignItems: 'center', margin: '2rem 0', justifyContent: 'center' }}
+      >
+        <Table sx={{ width: '90vw' }} component={Paper}>
+          <TableHead>
+            <TableRow>
               {keys.map((key, index) => {
-                return <th key={index}>{key}</th>;
+                return (
+                  <TableCell sx={{ textAlign: 'center' }} key={index}>
+                    {key}
+                  </TableCell>
+                );
               })}
-              <th>Rediģēšanas opcijas</th>
-            </S.KeysRow>
+              <TableCell sx={{ textAlign: 'center' }}>Rediģēšanas opcijas</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {data.map((datakey, index) => {
               return (
-                <tr key={index}>
+                <TableRow key={index}>
                   {keys.map((key, i) => {
-                    return <th key={i}>{datakey[keys[i]]}</th>;
+                    return (
+                      <TableCell sx={{ textAlign: 'center' }} key={i}>
+                        {datakey[keys[i]]}
+                      </TableCell>
+                    );
                   })}
-                  <th>
+                  <TableCell sx={{ textAlign: 'center' }}>
                     <ButtonGroup>
                       <Button value={datakey.id} onClick={handleEdit}>
                         Mainīt
@@ -97,13 +114,13 @@ const Database = () => {
                         Dzēst
                       </Button>
                     </ButtonGroup>
-                  </th>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </S.StyledTable>
-      </S.StyledTableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
     );
   };
 
@@ -137,7 +154,7 @@ const Database = () => {
           ''
         )}
       </FormControl>
-      {table ? <Table /> : ''}
+      {table ? <TableComp /> : ''}
     </>
   );
 };
