@@ -4,6 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
+import { Container, Paper } from '@mui/material';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -45,18 +46,27 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <S.LoginContainer>
-        <S.Form action="">
-          <S.Text>Administrācijas ielogošanās</S.Text>
-          <S.Input required type="text" variant="outlined" label="Lietotājvārds" onChange={handleUsernameInput} />
-          <S.Input required type="password" variant="outlined" label="Parole" onChange={handlePasswordInput} />
-          <S.SButton variant="outlined" onClick={onSubmit}>
-            Ielogoties
-          </S.SButton>
-        </S.Form>
-      </S.LoginContainer>
-    </>
+    <Container sx={{ width: '50%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <Paper
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          gap: '1rem',
+          padding: '1rem',
+          height: '40vh',
+        }}
+        variant="outlined"
+      >
+        <S.Text>Administrācijas ielogošanās</S.Text>
+        <S.Input required type="text" variant="outlined" label="Lietotājvārds" onChange={handleUsernameInput} />
+        <S.Input required type="password" variant="outlined" label="Parole" onChange={handlePasswordInput} />
+        <S.SButton variant="outlined" onClick={onSubmit}>
+          Ielogoties
+        </S.SButton>
+      </Paper>
+    </Container>
   );
 };
 export default LoginPage;

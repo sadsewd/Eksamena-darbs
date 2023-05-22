@@ -2,8 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminHeader from '../../Admin Header/AdminHeader';
-import { Button, TextField } from '@mui/material';
-import * as S from './databasestyle';
+import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 
 let tempObj = {};
 let tempValue;
@@ -78,36 +77,52 @@ const Edit = () => {
   return (
     <>
       <AdminHeader />
-      <S.StyledForm>
-        {keys.map((key, index) => {
-          if (key === 'id') {
-            isreadonly = true;
-          } else {
-            isreadonly = false;
-          }
-          return (
-            <div key={index}>
-              <label>{key}</label>
-              <br />
-              <S.Input
-                name={key}
-                placeholder={data[key]}
-                onChange={handleInput}
-                InputProps={{
-                  readOnly: isreadonly,
-                }}
-                variant="outlined"
-              />
-            </div>
-          );
-        })}
-        <Button variant="outlined" onClick={handleSubmit}>
-          Iesniegt
-        </Button>
-        <Button variant="outlined" onClick={handleCancel}>
-          Atcelt
-        </Button>
-      </S.StyledForm>
+      <Container
+        sx={{ width: '45%', height: '91.5vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Paper
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            padding: '1rem',
+            textAlign: 'center',
+            justifyContent: 'center',
+          }}
+          variant="outlined"
+        >
+          {keys.map((key, index) => {
+            if (key === 'id') {
+              isreadonly = true;
+            } else {
+              isreadonly = false;
+            }
+            return (
+              <div key={index}>
+                <Typography>{key}</Typography>
+                <br />
+                <TextField
+                  sx={{ width: '100%' }}
+                  name={key}
+                  placeholder={data[key]}
+                  onChange={handleInput}
+                  InputProps={{
+                    readOnly: isreadonly,
+                  }}
+                  variant="outlined"
+                />
+              </div>
+            );
+          })}
+          <Button variant="outlined" onClick={handleSubmit}>
+            Iesniegt
+          </Button>
+          <Button variant="outlined" onClick={handleCancel}>
+            Atcelt
+          </Button>
+        </Paper>
+      </Container>
     </>
   );
 };

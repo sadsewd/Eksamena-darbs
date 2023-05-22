@@ -3,7 +3,7 @@ import { TextColor, borderRadius, headerGray } from '../../../../GlobalCSSVariab
 import { Select, TextField } from '@mui/material';
 
 export const StyledTable = styled.table`
-  width: 80%;
+  width: 90%;
   justify-content: center;
   background: ${headerGray};
   color: ${TextColor};
@@ -20,16 +20,6 @@ export const StyledTableContainer = styled.div`
 
 export const KeysRow = styled.tr`
   color: lightblue;
-`;
-
-export const StyledSelect = styled(Select)`
-  .MuiOutlinedInput-notchedOutline {
-    border-width: 1px !important;
-    border-color: white !important;
-  }
-  .MuiFormLabel {
-    color: white;
-  }
 `;
 
 export const StyledContainer = styled.div`

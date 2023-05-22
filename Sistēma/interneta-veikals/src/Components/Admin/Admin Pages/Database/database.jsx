@@ -112,7 +112,7 @@ const Database = () => {
       <AdminHeader />
       <FormControl sx={{ mt: '2rem', width: '90%', ml: '5%' }}>
         <InputLabel sx={{ color: 'white' }}>Tabula</InputLabel>
-        <S.StyledSelect labelWidth={600} value={table} label="Age" onChange={handleChange} sx={{}}>
+        <Select value={table} label="Tabula" onChange={handleChange} sx={{}}>
           <MenuItem value={'administracija'}>Administracija</MenuItem>
           <MenuItem value={'groza_produkts'}>Groza produkts</MenuItem>
           <MenuItem value={'grozs'}>Grozs</MenuItem>
@@ -128,7 +128,7 @@ const Database = () => {
           <MenuItem value={'produkti'}>Produkti</MenuItem>
           <MenuItem value={'variacijas'}>Variacijas</MenuItem>
           <MenuItem value={'variacijas_dati'}>Variacijas dati</MenuItem>
-        </S.StyledSelect>
+        </Select>
         {table ? (
           <Button variant="outlined" sx={{ mt: '1rem' }} onClick={handleCreate}>
             Izveidot Ierakstu

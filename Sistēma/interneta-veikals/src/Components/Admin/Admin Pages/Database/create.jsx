@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
-import { Button, TextField } from '@mui/material';
+import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 import * as S from './databasestyle';
 
 let tempObj = {};
@@ -68,9 +68,23 @@ const Create = () => {
   return (
     <>
       <AdminHeader />
-      <S.StyledContainer>
-        <S.Cotainer>
-          <h1 style={{ color: 'white' }}>Izveidot jaunu vienumu tabulā {table}</h1>
+      <Container
+        sx={{ width: '45%', height: '91.5vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Paper
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem',
+            padding: '1rem',
+            height: '40vh',
+            textAlign: 'center',
+            justifyContent: 'center',
+          }}
+          variant="outlined"
+        >
+          <Typography sx={{ fontSize: '1.5rem' }}>Jauns vienums tabulā {table}</Typography>
           {keys.map((key, index) => {
             if (key === 'id') {
               display = 'none';
@@ -95,8 +109,8 @@ const Create = () => {
           <Button variant="outlined" onClick={handleCancel}>
             Atcelt
           </Button>
-        </S.Cotainer>
-      </S.StyledContainer>
+        </Paper>
+      </Container>
     </>
   );
 };

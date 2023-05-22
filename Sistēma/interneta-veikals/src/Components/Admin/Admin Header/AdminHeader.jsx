@@ -1,6 +1,7 @@
 import React from 'react';
 import * as S from './AdminHeaderStyle';
 import { useSignOut } from 'react-auth-kit';
+import { Button, Link } from '@mui/material';
 
 const AdminHeader = () => {
   const signOut = useSignOut();
@@ -8,11 +9,19 @@ const AdminHeader = () => {
   return (
     <S.Header>
       <S.ButtonContainer>
-        <S.Button to={'/admin/home'}>Pārskats</S.Button>
-        <S.Button to={'/admin/database'}>Datubāze</S.Button>
-        <S.Button onClick={signOut} to={'/admin'}>
+        <Button variant="text" value="home">
+          <Link underline="none" href="/admin/home">
+            Pārskats
+          </Link>
+        </Button>
+        <Button variant="text" value="database">
+          <Link underline="none" href="/admin/database">
+            Datubāze
+          </Link>
+        </Button>
+        <Button variant="text" onClick={signOut}>
           Izlogoties
-        </S.Button>
+        </Button>
       </S.ButtonContainer>
     </S.Header>
   );

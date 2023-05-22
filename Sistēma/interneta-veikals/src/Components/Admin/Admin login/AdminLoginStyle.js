@@ -24,44 +24,13 @@ export const Form = styled.form`
   gap: 20px;
 `;
 
-//MUI komponentēm ir nepieciešam palielināt specificitāti, to var izdarīt atkārtotojot klasi lietotjot &&{}
-
 export const SButton = styled(Button)`
-  && {
-    border-color: ${orangeVar};
-    color: ${orangeVar};
-    width: 35vw;
-    height: 5vh;
-    &:hover {
-      border-color: ${orangeVar};
-    }
-  }
+  width: 35vw;
+  height: 5vh;
 `;
 
 export const Input = styled(TextField)`
-  && {
-    width: 35vw;
-    & label.Mui-focused {
-      color: ${orangeVar};
-    }
-    & label {
-      color: ${orangeVar};
-    }
-    & .MuiOutlinedInput-root {
-      & fieldset {
-        border-color: ${orangeVar};
-      }
-      &:hover fieldset {
-        border-color: ${orangeVar};
-      }
-      &.Mui-focused fieldset {
-        border-color: ${orangeVar};
-      }
-      & input {
-        color: ${orangeVar};
-      }
-    }
-  }
+  width: 35vw;
 `;
 
 export const Text = styled.h2`

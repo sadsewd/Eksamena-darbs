@@ -8,52 +8,56 @@ import Database from './Components/Admin/Admin Pages/Database/database';
 import Edit from './Components/Admin/Admin Pages/Database/edit';
 import Create from './Components/Admin/Admin Pages/Database/create';
 import { RequireAuth } from 'react-auth-kit';
+import { CssBaseline } from '@mui/material';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<HomePage />} />
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route exact path="/admin" element={<AdminLogin />} />
-        <Route
-          exact
-          path="/admin/home"
-          element={
-            <RequireAuth loginPath="/admin">
-              <AdminHome />
-            </RequireAuth>
-          }
-        />
-        <Route
-          exact
-          path="/admin/database"
-          element={
-            <RequireAuth loginPath="/admin">
-              <Database />
-            </RequireAuth>
-          }
-        />
-        <Route
-          exact
-          path="/admin/database/edit/:table/:id"
-          element={
-            <RequireAuth loginPath="/admin">
-              <Edit />
-            </RequireAuth>
-          }
-        />
-        <Route
-          exact
-          path="/admin/database/create/:table/"
-          element={
-            <RequireAuth loginPath="/admin">
-              <Create />
-            </RequireAuth>
-          }
-        />
-      </Routes>
-    </Router>
+    <>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route exact path="/admin" element={<AdminLogin />} />
+          <Route
+            exact
+            path="/admin/home"
+            element={
+              <RequireAuth loginPath="/admin">
+                <AdminHome />
+              </RequireAuth>
+            }
+          />
+          <Route
+            exact
+            path="/admin/database"
+            element={
+              <RequireAuth loginPath="/admin">
+                <Database />
+              </RequireAuth>
+            }
+          />
+          <Route
+            exact
+            path="/admin/database/edit/:table/:id"
+            element={
+              <RequireAuth loginPath="/admin">
+                <Edit />
+              </RequireAuth>
+            }
+          />
+          <Route
+            exact
+            path="/admin/database/create/:table/"
+            element={
+              <RequireAuth loginPath="/admin">
+                <Create />
+              </RequireAuth>
+            }
+          />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
