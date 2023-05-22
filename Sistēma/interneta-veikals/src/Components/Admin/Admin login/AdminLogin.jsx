@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
+import md5 from 'md5';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -27,8 +28,8 @@ const LoginPage = () => {
   const onSubmit = async () => {
     if (username !== '' || password !== '') {
       try {
-        const res = await axios.get(`http://localhost:5001/adminLogin/${username}/${password}`);
-        if ((password === res.data[0].parole) & (username === res.data[0].lietotajvards)) {
+        const res = await axios.get(`http://localhost:5001/adminLogin/${username}/${md5(password)}`);
+        if ((md5(password) === res.data[0].parole) & (username === res.data[0].lietotajvards)) {
           signIn({
             token: res.headers['token'],
             expiresIn: 60,

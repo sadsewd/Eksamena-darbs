@@ -4,6 +4,7 @@ import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 import * as S from './databasestyle';
+import md5 from 'md5';
 
 let tempObj = {};
 let tempValue;
@@ -40,14 +41,15 @@ const Create = () => {
     tempValue = event.target.value;
     tempId = event.target.name;
     tempObj[tempId] = tempValue;
-    console.log(tempObj);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
+    if (tempObj.parole !== undefined) {
+      tempObj.parole = md5(tempObj.parole);
+    }
     delete tempObj.id;
     createData = new URLSearchParams(Object.entries(tempObj)).toString();
-    console.log(createData);
     CreateData();
     navigate('/admin/database');
   };
