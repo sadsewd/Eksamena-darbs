@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
-import * as S from './databasestyle';
 import md5 from 'md5';
 
 let tempObj = {};
@@ -95,11 +94,11 @@ const Create = () => {
             }
             return (
               <div key={index}>
-                <S.Input
+                <TextField
+                  sx={{ width: '100%', display: display }}
                   name={key}
                   placeholder={key}
                   onChange={handleInput}
-                  sx={{ display: display }}
                   variant="outlined"
                 />
               </div>
