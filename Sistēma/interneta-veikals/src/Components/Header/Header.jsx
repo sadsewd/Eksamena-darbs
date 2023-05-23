@@ -7,17 +7,19 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  TextField,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useIsAuthenticated, useSignOut } from 'react-auth-kit';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
+  const navigate = useNavigate();
   const isAuthenticated = useIsAuthenticated();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -104,7 +106,6 @@ function Header() {
               </MenuItem>
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -121,7 +122,7 @@ function Header() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Veikals
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
@@ -130,6 +131,7 @@ function Header() {
             <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
               Kategorijas
             </Button>
+            <TextField variant="standard" label="Meklēt" sx={{ ml: 1, my: 0.5, color: 'white', display: 'block' }} />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -145,7 +147,11 @@ function Header() {
                 </IconButton>
               </Tooltip>
             ) : (
-              ''
+              <Tooltip title="Ielogoties">
+                <IconButton onClick={() => navigate('/login')} sx={{ p: 0 }}>
+                  <PersonIcon />
+                </IconButton>
+              </Tooltip>
             )}
 
             <Menu

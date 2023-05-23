@@ -639,7 +639,7 @@ app.put('/produkta_info/:id', (req, res) => {
 
 /*`produkta_info_has_variacijas_dati`*/
 app.get('/produkta_info_has_variacijas_dati', (req, res) => {
-  const query = 'SELECT * FROM produkta_info_has_variacijas_dati';
+  const query = 'SELECT * FROM Produkta_info_has_variacijas_dati';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);

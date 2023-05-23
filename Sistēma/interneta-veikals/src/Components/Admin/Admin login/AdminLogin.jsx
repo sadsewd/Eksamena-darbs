@@ -21,10 +21,6 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const onSubmit = async () => {
     if (username !== '' || password !== '') {
       try {
@@ -56,7 +52,7 @@ const LoginPage = () => {
           flexDirection: 'column',
           gap: '1rem',
           padding: '1rem',
-          height: '40vh',
+          height: '50vh',
         }}
         variant="outlined"
       >
