@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
 export const Footer = styled.footer`
+  margin-top: 1rem;
   background: #282828;
-  width: 100vw;
-  height: 2.5rem;
-  color: #c8c8c8;
-  display: flex;
+  width: 100%;
+  height: 40px;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  bottom: 0;
+  display: flex;
+  flex-shrink: 0;
 `;

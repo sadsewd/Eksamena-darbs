@@ -8,6 +8,7 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: { main: '#eead00' },
+    secondary: { main: '#272727' },
   },
   typography: {
     fontFamily: ['Roboto', 'sans-serif'].join(','),
