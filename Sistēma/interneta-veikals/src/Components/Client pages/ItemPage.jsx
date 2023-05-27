@@ -7,14 +7,11 @@ import {
   Button,
   ButtonGroup,
   Container,
-  Input,
   List,
   ListItem,
   ListItemText,
   Modal,
   Paper,
-  Table,
-  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -22,17 +19,46 @@ import Footer from '../Footer/Footer';
 import * as S from './inputStyle';
 
 const ItemPage = () => {
-  const [data, setData] = useState();
-  const [info, setInfo] = useState();
   const params = useParams();
   const id = params.id;
+  const [data, setData] = useState();
+  const [info, setInfo] = useState();
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [count, setCount] = useState(0);
-  const handleCount = event => setCount(event.target.value);
+  const [count, setCount] = useState(1);
   const [direction, setDirection] = useState('row');
   const [width, setWidth] = useState(['80%', '20%']);
+  const [size, setSize] = useState(['2rem', '1.3rem']);
+
+  const cartItem = {
+    id: null,
+    skaits: 0,
+  };
+
+  const handleAddToCart = event => {
+    cartItem.id = event.target.value;
+    cartItem.skaits = cartItem.skaits + count;
+    if (cartItem.skaits > data.daudzums_noliktava) {
+      cartItem.skaits = data.daudzums_noliktava;
+    }
+    localStorage.setItem(event.target.value, JSON.stringify(cartItem));
+    window.dispatchEvent(new Event('storage'));
+  };
+
+  useEffect(() => {
+    if (data !== undefined) {
+      if (count < 0) {
+        setCount(0);
+      }
+      if (count > data.daudzums_noliktava) {
+        setCount(data.daudzums_noliktava);
+      }
+    }
+  }, [count]);
+  //This makes sure that user can never add more items than the available stock
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleCount = event => setCount(event.target.value);
 
   const handleMinus = () => {
     if (count > 0) {
@@ -46,22 +72,29 @@ const ItemPage = () => {
     if (window.innerWidth < '1024') {
       setDirection('column');
       setWidth(['100%', '100%']);
+      setSize(['1.3rem', '1rem']);
     } else {
       setWidth(['80%', '20%']);
       setDirection('row');
+      setSize(['2rem', '1.3rem']);
     }
   }, []);
+  //checks screen size on initial render and fetches data
 
   const handleResize = () => {
     if (window.innerWidth < '1024') {
       setDirection('column');
       setWidth(['100%', '100%']);
+      setSize(['1.3rem', '1rem']);
     } else {
       setWidth(['80%', '20%']);
+      setSize(['2rem', '1.3rem']);
       setDirection('row');
     }
   };
-  React.useEffect(() => {
+  //checks screen size on screen size change
+
+  useEffect(() => {
     window.addEventListener('resize', handleResize, false);
   }, []);
 
@@ -77,7 +110,6 @@ const ItemPage = () => {
     try {
       const res = await axios.get(`http://localhost:5001/variacijasDati/${id}`);
       setInfo(res.data);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -104,7 +136,7 @@ const ItemPage = () => {
               component={Paper}
               sx={{ width: width[0], padding: '1rem', display: 'flex', alignItems: 'center', flexDirection: 'column' }}
             >
-              <Typography sx={{ fontSize: '2rem', mb: '1rem' }}>{data.nosaukums}</Typography>
+              <Typography sx={{ fontSize: size[0], mb: '1rem' }}>{data.nosaukums}</Typography>
               <Box
                 onClick={handleOpen}
                 component="img"
@@ -158,7 +190,7 @@ const ItemPage = () => {
                   <Button onClick={handleMinus}>-</Button>
                 </ButtonGroup>
               </Tooltip>
-              <Button variant="outlined" sx={{ bottom: '0', width: '100%' }}>
+              <Button variant="outlined" value={data.id} onClick={handleAddToCart} sx={{ bottom: '0', width: '100%' }}>
                 Ielikt grozā
               </Button>
             </Container>
@@ -169,21 +201,21 @@ const ItemPage = () => {
             maxWidth={false}
             sx={{ mb: '2.5rem', mt: '1rem', display: 'flex', width: '98vw', flexDirection: 'column' }}
           >
-            <Typography sx={{ textAlign: 'center', fontSize: '2rem', mt: '1rem' }}>Produkta specifikācijas</Typography>
+            <Typography sx={{ textAlign: 'center', fontSize: size[0], mt: '1rem' }}>Produkta specifikācijas</Typography>
             <Container maxWidth={false} sx={{ display: 'flex', flexDirection: 'row' }}>
               <Container maxWidth={false}>
                 <List>
                   <ListItem sx={{ textAlign: 'center', borderBottom: 'solid orange 1px' }}>
                     <ListItemText
-                      primary={<Typography sx={{ fontSize: '1.3rem' }}>Specifikacijas nosaukums</Typography>}
+                      primary={<Typography sx={{ fontSize: size[1] }}>Specifikacijas nosaukums</Typography>}
                     />
                   </ListItem>
                   {info
                     ? info.map((key, index) => {
                         return (
-                          <ListItem sx={{ textAlign: 'center' }}>
+                          <ListItem key={index} sx={{ textAlign: 'center' }}>
                             <ListItemText
-                              primary={<Typography sx={{ fontSize: '1.3rem' }}>{key.variacijas_nos}</Typography>}
+                              primary={<Typography sx={{ fontSize: size[1] }}>{key.variacijas_nos}</Typography>}
                             />
                           </ListItem>
                         );
@@ -195,15 +227,15 @@ const ItemPage = () => {
                 <List>
                   <ListItem sx={{ textAlign: 'center', borderBottom: 'solid orange 1px' }}>
                     <ListItemText
-                      primary={<Typography sx={{ fontSize: '1.3rem' }}>Specifikacijas vertība</Typography>}
+                      primary={<Typography sx={{ fontSize: size[1] }}>Specifikacijas vertība</Typography>}
                     />
                   </ListItem>
                   {info
                     ? info.map((key, index) => {
                         return (
-                          <ListItem sx={{ textAlign: 'center' }}>
+                          <ListItem key={index} sx={{ textAlign: 'center' }}>
                             <ListItemText
-                              primary={<Typography sx={{ fontSize: '1.3rem' }}>{key.variacijas_vert}</Typography>}
+                              primary={<Typography sx={{ fontSize: size[1] }}>{key.variacijas_vert}</Typography>}
                             />
                           </ListItem>
                         );

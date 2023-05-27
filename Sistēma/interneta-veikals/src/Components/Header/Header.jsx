@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
+  Badge,
   Box,
   Button,
   Container,
@@ -21,10 +22,19 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
   const navigate = useNavigate();
   const isAuthenticated = useIsAuthenticated();
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [cartItems, setCartItems] = useState(0);
   let authStatus = false;
   const signOut = useSignOut();
+
+  useEffect(() => {
+    setCartItems(localStorage.length);
+  }, []);
+
+  window.addEventListener('storage', () => {
+    setCartItems(localStorage.length);
+  });
 
   if (isAuthenticated()) {
     authStatus = true;
@@ -137,7 +147,9 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Atvērt grozu">
               <IconButton sx={{ p: 0, mr: '1rem' }}>
-                <ShoppingCartIcon />
+                <Badge badgeContent={cartItems} color="primary">
+                  <ShoppingCartIcon />
+                </Badge>
               </IconButton>
             </Tooltip>
             {authStatus ? (

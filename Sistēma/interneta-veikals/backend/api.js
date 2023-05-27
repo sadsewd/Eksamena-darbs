@@ -27,7 +27,7 @@ app.listen(5001, () => {
 app.get('/prece/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'select produkti.id, produkti.nosaukums,produkti.apraksts, produkti.attels, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ? limit 1;';
+    'select produkti.id, produkti.nosaukums,produkti.apraksts, produkti.attels, produkta_info.cena , produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ? limit 1;';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -47,7 +47,7 @@ app.get('/variacijasDati/:id', (req, res) => {
 /*Home page fetch*/
 app.get('/jaunakie', (req, res) => {
   const query =
-    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 6;';
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -55,7 +55,7 @@ app.get('/jaunakie', (req, res) => {
 });
 app.get('/popularakie', (req, res) => {
   const query =
-    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 6;';
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);

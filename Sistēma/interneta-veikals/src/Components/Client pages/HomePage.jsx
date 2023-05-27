@@ -4,6 +4,8 @@ import Footer from '../Footer/Footer';
 import { Container, Grid, Typography } from '@mui/material';
 import CardComp from '../Card/Card';
 import axios from 'axios';
+import StarIcon from '@mui/icons-material/Star';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
 
 const HomePage = () => {
   const [newData, setNewData] = useState([{}]);
@@ -40,13 +42,15 @@ const HomePage = () => {
           m: '1rem auto',
           height: '10rem',
           display: 'flex',
-          backgroundColor: '#272727',
+          backgroundColor: '#201e66',
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: '.5rem',
         }}
       >
-        <Typography sx={{ fontSize: '2.5rem' }}>Populārākās preces</Typography>
+        <Typography sx={{ fontSize: '2.5rem' }}>
+          <StarIcon /> Top preces <StarIcon />
+        </Typography>
       </Container>
       <Grid container sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
         {popData
@@ -70,13 +74,15 @@ const HomePage = () => {
           m: '1rem auto',
           height: '10rem',
           display: 'flex',
-          backgroundColor: '#272727',
+          backgroundColor: '#1e661f',
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: '.5rem',
         }}
       >
-        <Typography sx={{ fontSize: '2.5rem' }}>Jaunākās preces</Typography>
+        <Typography sx={{ fontSize: '2.5rem' }}>
+          <NewReleasesIcon /> Jaunākās preces <NewReleasesIcon />
+        </Typography>
       </Container>
       <Grid container sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
         {newData
