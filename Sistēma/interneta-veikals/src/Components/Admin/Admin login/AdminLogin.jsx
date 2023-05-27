@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as S from './AdminLoginStyle';
 import { useState } from 'react';
 import axios from 'axios';
@@ -10,7 +10,6 @@ import md5 from 'md5';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [data, setData] = useState('');
   const signIn = useSignIn();
   const navigate = useNavigate();
 

@@ -23,6 +23,27 @@ app.listen(5001, () => {
   console.log('Connected to backend.');
 });
 
+/*Item page fetch*/
+app.get('/prece/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'select produkti.id, produkti.nosaukums,produkti.apraksts, produkti.attels, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ? limit 1;';
+  db.query(query, [id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+app.get('/variacijasDati/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'select  variacijas.nosaukums as variacijas_nos, variacijas_dati.vertiba as variacijas_vert from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ?';
+  db.query(query, [id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+/*Item page fetch beigas*/
+
 /*Home page fetch*/
 app.get('/jaunakie', (req, res) => {
   const query =

@@ -9,6 +9,7 @@ import Edit from './Components/Admin/Admin Pages/Database/edit';
 import Create from './Components/Admin/Admin Pages/Database/create';
 import { RequireAuth } from 'react-auth-kit';
 import { CssBaseline } from '@mui/material';
+import ItemPage from './Components/Client pages/ItemPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<HomePage />} />
+          <Route exact path="/produkts/:id" element={<ItemPage />} />
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/admin" element={<AdminLogin />} />
           <Route

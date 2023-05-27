@@ -6,8 +6,8 @@ import CardComp from '../Card/Card';
 import axios from 'axios';
 
 const HomePage = () => {
-  const [newData, setNewData] = useState();
-  const [popData, setPopData] = useState();
+  const [newData, setNewData] = useState([{}]);
+  const [popData, setPopData] = useState([{}]);
 
   useEffect(() => {
     FetchPopular();
@@ -18,7 +18,6 @@ const HomePage = () => {
     try {
       const res = await axios.get(`http://localhost:5001/popularakie`);
       setPopData(res.data);
-      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +52,7 @@ const HomePage = () => {
         {popData
           ? popData.map((key, index) => {
               return (
-                <Grid xs={11.8} sm={5.8} md={5.8} lg={2.8} xl={2.8}>
+                <Grid key={index} item={true} xs={11.8} sm={5.8} md={5.8} lg={2.8} xl={2.8}>
                   <CardComp
                     key={index}
                     title={key.nosaukums}
@@ -83,7 +82,7 @@ const HomePage = () => {
         {newData
           ? newData.map((key, index) => {
               return (
-                <Grid xs={11.8} sm={5.8} md={5.8} lg={2.8} xl={2.8}>
+                <Grid key={index} item={true} xs={11.8} sm={5.8} md={5.8} lg={2.8} xl={2.8}>
                   <CardComp
                     key={index}
                     title={key.nosaukums}
