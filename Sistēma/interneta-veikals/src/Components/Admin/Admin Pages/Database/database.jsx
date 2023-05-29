@@ -144,6 +144,7 @@ const Database = () => {
           <MenuItem value={'produkti'}>Produkti</MenuItem>
           <MenuItem value={'variacijas'}>Variacijas</MenuItem>
           <MenuItem value={'variacijas_dati'}>Variacijas dati</MenuItem>
+          <MenuItem value={'produkti_has_pasutijumi'}>Produkti has Pasutijumi</MenuItem>
         </Select>
         {table ? (
           <Button variant="outlined" sx={{ mt: '1rem' }} onClick={handleCreate}>

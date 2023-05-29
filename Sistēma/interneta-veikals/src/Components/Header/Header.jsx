@@ -146,7 +146,7 @@ function Header() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Atvērt grozu">
-              <IconButton sx={{ p: 0, mr: '1rem' }}>
+              <IconButton onClick={() => navigate('/cart')} sx={{ p: 0, mr: '1rem' }}>
                 <Badge badgeContent={cartItems} color="primary">
                   <ShoppingCartIcon />
                 </Badge>

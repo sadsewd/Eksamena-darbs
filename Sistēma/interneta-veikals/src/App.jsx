@@ -10,6 +10,7 @@ import Create from './Components/Admin/Admin Pages/Database/create';
 import { RequireAuth } from 'react-auth-kit';
 import { CssBaseline } from '@mui/material';
 import ItemPage from './Components/Client pages/ItemPage';
+import Cart from './Components/Client pages/Cart';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/produkts/:id" element={<ItemPage />} />
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/admin" element={<AdminLogin />} />
+          <Route exact path="/cart" element={<Cart />} />
           <Route
             exact
             path="/admin/home"

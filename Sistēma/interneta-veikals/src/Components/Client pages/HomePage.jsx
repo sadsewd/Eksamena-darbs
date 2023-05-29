@@ -63,6 +63,7 @@ const HomePage = () => {
                     imgsrc={key.attels}
                     Category={key.kategorija}
                     itemId={key.id}
+                    price={key.cena}
                   />
                 </Grid>
               );
@@ -95,6 +96,7 @@ const HomePage = () => {
                     imgsrc={key.attels}
                     Category={key.kategorija}
                     itemId={key.id}
+                    price={key.cena}
                   />
                 </Grid>
               );

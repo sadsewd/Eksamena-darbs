@@ -23,6 +23,42 @@ app.listen(5001, () => {
   console.log('Connected to backend.');
 });
 
+/*Admin parskats*/
+app.get('/precuInfo/', (req, res) => {
+  const query =
+    'select count(produkta_info.id) as skaits, sum(produkta_info.daudzums_noliktava) as daudzums from produkta_info;';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+app.get('/klientuInfo/', (req, res) => {
+  const query = 'select count(id) as skaits from Lietotaji;';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+app.get('/pasutijumuInfo/', (req, res) => {
+  const query = 'select count(id) as skaits from pasutijumi;';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+/*Admin parskats BEIGAS*/
+
+/*grozaprodukti*/
+app.get('/grozaprodukti/', (req, res) => {
+  const query =
+    'select DISTINCT produkti.id, produkti.nosaukums, produkti.attels, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id;';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+/*grozaprodukti beigas*/
+
 /*Item page fetch*/
 app.get('/prece/:id', (req, res) => {
   const id = req.params.id;
@@ -47,7 +83,7 @@ app.get('/variacijasDati/:id', (req, res) => {
 /*Home page fetch*/
 app.get('/jaunakie', (req, res) => {
   const query =
-    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;';
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -55,7 +91,7 @@ app.get('/jaunakie', (req, res) => {
 });
 app.get('/popularakie', (req, res) => {
   const query =
-    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 8;';
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -882,3 +918,54 @@ app.put('/variacijas_dati/:id', (req, res) => {
   });
 });
 /*`variacijas_dati` BEIGAS*/
+
+/*`produkti_has_pasutijumi`*/
+app.get('/produkti_has_pasutijumi', (req, res) => {
+  const query = 'SELECT * FROM produkti_has_pasutijumi';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get('/produkti_has_pasutijumi/:id', (req, res) => {
+  const id = req.params.id;
+  const query = 'SELECT * FROM produkti_has_pasutijumi WHERE id = ?';
+  db.query(query, [id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.post('/produkti_has_pasutijumi', (req, res) => {
+  const query = 'INSERT INTO produkti_has_pasutijumi(`Produkti_id`,`Pasutijumi_id`, daudzums) VALUES (?)';
+
+  const values = [req.body.Produkti_id, req.body.Pasutijumi_id, req.body.daudzums];
+  db.query(query, [values], (err, data) => {
+    if (err) return res.send(err);
+    return res.json(data);
+  });
+});
+
+app.delete('/produkti_has_pasutijumi/:id', (req, res) => {
+  const id = req.params.id;
+  const query = ' DELETE FROM produkti_has_pasutijumi WHERE id = ? ';
+
+  db.query(query, [id], (err, data) => {
+    if (err) return res.send(err);
+    return res.json(data);
+  });
+});
+
+app.put('/produkti_has_pasutijumi/:id', (req, res) => {
+  const id = req.params.id;
+  const query = 'UPDATE produkti_has_pasutijumi SET `Produkti_id`= ?, `Pasutijumi_id`= ?, `daudzums`= ?';
+
+  const values = [req.body.Produkti_id, req.body.Pasutijumi_id, req.body.daudzums];
+
+  db.query(query, [...values, id], (err, data) => {
+    if (err) return res.send(err);
+    return res.json(data);
+  });
+});
+/*`produkti_has_pasutijumi` BEIGAS*/

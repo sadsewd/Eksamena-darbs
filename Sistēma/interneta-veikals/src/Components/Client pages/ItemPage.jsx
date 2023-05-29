@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '../Header/Header';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import Header from '../Header/Header'
+import axios from 'axios'
 import {
   Box,
   Button,
@@ -14,106 +14,109 @@ import {
   Paper,
   Tooltip,
   Typography,
-} from '@mui/material';
-import Footer from '../Footer/Footer';
-import * as S from './inputStyle';
+} from '@mui/material'
+import Footer from '../Footer/Footer'
+import * as S from './inputStyle'
 
 const ItemPage = () => {
-  const params = useParams();
-  const id = params.id;
-  const [data, setData] = useState();
-  const [info, setInfo] = useState();
-  const [open, setOpen] = useState(false);
-  const [count, setCount] = useState(1);
-  const [direction, setDirection] = useState('row');
-  const [width, setWidth] = useState(['80%', '20%']);
-  const [size, setSize] = useState(['2rem', '1.3rem']);
+  const params = useParams()
+  const id = params.id
+  const [data, setData] = useState()
+  const [info, setInfo] = useState()
+  const [open, setOpen] = useState(false)
+  const [count, setCount] = useState(1)
+  const [direction, setDirection] = useState('row')
+  const [width, setWidth] = useState(['80%', '20%'])
+  const [size, setSize] = useState(['2rem', '1.3rem'])
 
   const cartItem = {
     id: null,
     skaits: 0,
-  };
+  }
 
   const handleAddToCart = event => {
-    cartItem.id = event.target.value;
-    cartItem.skaits = cartItem.skaits + count;
+    cartItem.id = event.target.value
+    cartItem.skaits = cartItem.skaits + count
+    cartItem.cena = data.cena
+    cartItem.nosaukums = data.nosaukums
+
     if (cartItem.skaits > data.daudzums_noliktava) {
-      cartItem.skaits = data.daudzums_noliktava;
+      cartItem.skaits = data.daudzums_noliktava
     }
-    localStorage.setItem(event.target.value, JSON.stringify(cartItem));
-    window.dispatchEvent(new Event('storage'));
-  };
+    localStorage.setItem(event.target.value, JSON.stringify(cartItem))
+    window.dispatchEvent(new Event('storage'))
+  }
 
   useEffect(() => {
     if (data !== undefined) {
       if (count < 0) {
-        setCount(0);
+        setCount(0)
       }
       if (count > data.daudzums_noliktava) {
-        setCount(data.daudzums_noliktava);
+        setCount(data.daudzums_noliktava)
       }
     }
-  }, [count]);
+  }, [count])
   //This makes sure that user can never add more items than the available stock
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleCount = event => setCount(event.target.value);
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const handleCount = event => setCount(event.target.value)
 
   const handleMinus = () => {
     if (count > 0) {
-      setCount(count - 1);
+      setCount(count - 1)
     }
-  };
+  }
 
   useEffect(() => {
-    FetchProduct();
-    FetchInfo();
+    FetchProduct()
+    FetchInfo()
     if (window.innerWidth < '1024') {
-      setDirection('column');
-      setWidth(['100%', '100%']);
-      setSize(['1.3rem', '1rem']);
+      setDirection('column')
+      setWidth(['100%', '100%'])
+      setSize(['1.3rem', '1rem'])
     } else {
-      setWidth(['80%', '20%']);
-      setDirection('row');
-      setSize(['2rem', '1.3rem']);
+      setWidth(['80%', '20%'])
+      setDirection('row')
+      setSize(['2rem', '1.3rem'])
     }
-  }, []);
+  }, [])
   //checks screen size on initial render and fetches data
 
   const handleResize = () => {
     if (window.innerWidth < '1024') {
-      setDirection('column');
-      setWidth(['100%', '100%']);
-      setSize(['1.3rem', '1rem']);
+      setDirection('column')
+      setWidth(['100%', '100%'])
+      setSize(['1.3rem', '1rem'])
     } else {
-      setWidth(['80%', '20%']);
-      setSize(['2rem', '1.3rem']);
-      setDirection('row');
+      setWidth(['80%', '20%'])
+      setSize(['2rem', '1.3rem'])
+      setDirection('row')
     }
-  };
+  }
   //checks screen size on screen size change
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize, false);
-  }, []);
+    window.addEventListener('resize', handleResize, false)
+  }, [])
 
   const FetchProduct = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/prece/${id}`);
-      setData(res.data[0]);
+      const res = await axios.get(`http://localhost:5001/prece/${id}`)
+      setData(res.data[0])
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
   const FetchInfo = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/variacijasDati/${id}`);
-      setInfo(res.data);
+      const res = await axios.get(`http://localhost:5001/variacijasDati/${id}`)
+      setInfo(res.data)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   return (
     <>
@@ -218,7 +221,7 @@ const ItemPage = () => {
                               primary={<Typography sx={{ fontSize: size[1] }}>{key.variacijas_nos}</Typography>}
                             />
                           </ListItem>
-                        );
+                        )
                       })
                     : ''}
                 </List>
@@ -238,7 +241,7 @@ const ItemPage = () => {
                               primary={<Typography sx={{ fontSize: size[1] }}>{key.variacijas_vert}</Typography>}
                             />
                           </ListItem>
-                        );
+                        )
                       })
                     : ''}
                 </List>
@@ -251,7 +254,7 @@ const ItemPage = () => {
       )}
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default ItemPage;
+export default ItemPage
