@@ -29,7 +29,7 @@ const LoginPage = () => {
             token: res.headers['token'],
             expiresIn: 60,
             tokenType: 'Bearer',
-            authState: { username: username },
+            authState: { username: username, userType: 'admin' },
           });
           navigate('/admin/home');
         }

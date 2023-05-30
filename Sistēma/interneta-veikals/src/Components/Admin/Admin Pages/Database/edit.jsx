@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
+import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
 
 let tempObj = {};
 let tempValue;
@@ -17,6 +18,15 @@ const Edit = () => {
   const table = params.table;
   const [data, setData] = useState([]);
   const [keys, setkeys] = useState([]);
+
+  const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
+
+  useEffect(() => {
+    if (!isAuthenticated || auth().userType !== 'admin') {
+      navigate('/');
+    }
+  }, []);
 
   useEffect(() => {
     if (data) {

@@ -110,12 +110,12 @@ app.get('/popularakie', (req, res) => {
 
 /*Login*/
 
-app.get('/klientsLogin/:lietotajvards/:parole', (req, res) => {
+app.get('/klientLogin/:lietotajvards/:parole', (req, res) => {
   const lietotajvards = req.params.lietotajvards;
   const parole = req.params.parole;
   const jwtToken = jwt.sign({ lietotajvards: lietotajvards }, process.env.JWT_KEY);
 
-  const query = 'SELECT * FROM administracija WHERE parole = ? AND lietotajvards = ?';
+  const query = 'SELECT * FROM lietotaji WHERE parole = ? AND lietotajvards = ?';
   db.query(query, [parole, lietotajvards], (err, data) => {
     if (err) return res.json(err);
     res.set({ token: jwtToken });

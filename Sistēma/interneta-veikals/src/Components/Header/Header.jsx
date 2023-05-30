@@ -18,29 +18,31 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useIsAuthenticated, useSignOut } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
+import { useAuthUser } from 'react-auth-kit';
 
 function Header() {
   const navigate = useNavigate();
   const isAuthenticated = useIsAuthenticated();
+  const auth = useAuthUser();
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [cartItems, setCartItems] = useState(0);
-  let authStatus = false;
+  const [authStatus, setAuthStatus] = useState(false);
   const signOut = useSignOut();
 
   useEffect(() => {
     setCartItems(localStorage.length);
+    if (isAuthenticated() && auth().userType === 'client') {
+      setAuthStatus(true);
+    } else {
+      setAuthStatus(false);
+    }
   }, []);
 
   window.addEventListener('storage', () => {
     setCartItems(localStorage.length);
   });
-
-  if (isAuthenticated()) {
-    authStatus = true;
-  } else {
-    authStatus = false;
-  }
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -55,6 +57,10 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const handleSignout = () => {
+    signOut();
+    setAuthStatus(false);
   };
 
   return (
@@ -155,11 +161,17 @@ function Header() {
               </IconButton>
             </Tooltip>
             {authStatus ? (
-              <Tooltip title="Atvērt lietotāja opcijas">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <PersonIcon />
-                </IconButton>
-              </Tooltip>
+              <>
+                {' '}
+                <Tooltip title="Atvērt lietotāja opcijas">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <PersonIcon />
+                  </IconButton>
+                </Tooltip>
+                <Button sx={{ ml: '1rem' }} onClick={handleSignout}>
+                  Izlogoties
+                </Button>
+              </>
             ) : (
               <Tooltip title="Ielogoties">
                 <IconButton onClick={() => navigate('/login')} sx={{ p: 0 }}>
@@ -189,9 +201,6 @@ function Header() {
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Iestatijumi</Typography>
-              </MenuItem>
-              <MenuItem onClick={signOut}>
-                <Typography textAlign="center">Izlogoties</Typography>
               </MenuItem>
             </Menu>
           </Box>
