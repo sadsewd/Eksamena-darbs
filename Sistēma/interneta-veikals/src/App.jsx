@@ -11,6 +11,8 @@ import { RequireAuth } from 'react-auth-kit';
 import { CssBaseline } from '@mui/material';
 import ItemPage from './Components/Client pages/ItemPage';
 import Cart from './Components/Client pages/Cart';
+import Payment from './Components/Client pages/Payment';
+import Katalogs from './Components/Client pages/katalogs';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/admin" element={<AdminLogin />} />
           <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/payment" element={<Payment />} />
+          <Route exact path="/katalogs" element={<Katalogs />} />
           <Route
             exact
             path="/admin/home"

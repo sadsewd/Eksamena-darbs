@@ -109,7 +109,9 @@ function Header() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Katalogs</Typography>
+                <Typography textAlign="center" onClick={() => navigate('/katalogs')}>
+                  Katalogs
+                </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Kategorijas</Typography>
@@ -120,7 +122,7 @@ function Header() {
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -135,7 +137,7 @@ function Header() {
             Veikals
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+            <Button onClick={() => navigate('/katalogs')} sx={{ my: 2, color: 'white', display: 'block' }}>
               Katalogs
             </Button>
             <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>

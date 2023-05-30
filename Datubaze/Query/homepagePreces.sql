@@ -41,3 +41,5 @@ select count(id) as skaits from Lietotaji;
 
 /*Pasutijumu skaits*/
 select count(id) as skaits from pasutijumi;
+
+

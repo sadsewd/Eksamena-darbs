@@ -81,6 +81,15 @@ app.get('/variacijasDati/:id', (req, res) => {
 /*Item page fetch beigas*/
 
 /*Home page fetch*/
+
+app.get('/visasPreces', (req, res) => {
+  const query =
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id;';
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
 app.get('/jaunakie', (req, res) => {
   const query =
     'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;';
@@ -391,57 +400,6 @@ app.put('/kategorijas/:id', (req, res) => {
   });
 });
 /*`kategorijas` BEIGAS*/
-
-/*`lietotaja_informacija`*/
-app.get('/lietotaja_informacija', (req, res) => {
-  const query = 'SELECT * FROM lietotaja_informacija';
-  db.query(query, (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.get('/lietotaja_informacija/:id', (req, res) => {
-  const id = req.params.id;
-  const query = 'SELECT * FROM lietotaja_informacija WHERE id = ?';
-  db.query(query, [id], (err, data) => {
-    if (err) return res.json(err);
-    return res.json(data);
-  });
-});
-
-app.post('/lietotaja_informacija', (req, res) => {
-  const query = 'INSERT INTO lietotaja_informacija(`Lietotaji_id`,`informacija_id`) VALUES (?)';
-
-  const values = [req.body.Lietotaji_id, req.body.informacija_id];
-  db.query(query, [values], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.delete('/lietotaja_informacija/:id', (req, res) => {
-  const id = req.params.id;
-  const query = ' DELETE FROM lietotaja_informacija WHERE id = ? ';
-
-  db.query(query, [id], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.put('/lietotaja_informacija/:id', (req, res) => {
-  const id = req.params.id;
-  const query = 'UPDATE lietotaja_informacija SET `Lietotaji_id`= ?, `informacija_id`= ? WHERE id = ?';
-
-  const values = [req.body.Lietotaji_id, req.body.informacija_id];
-
-  db.query(query, [...values, id], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-/*`lietotaja_informacija` BEIGAS*/
 
 /*`lietotaji`*/
 app.get('/lietotaji', (req, res) => {
