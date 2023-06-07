@@ -82,6 +82,16 @@ app.get('/variacijasDati/:id', (req, res) => {
 
 /*Home page fetch*/
 
+app.get('/kategorijasPreces/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id where kategorijas.id = ?;';
+  db.query(query,[id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.get('/visasPreces', (req, res) => {
   const query =
     'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id;';

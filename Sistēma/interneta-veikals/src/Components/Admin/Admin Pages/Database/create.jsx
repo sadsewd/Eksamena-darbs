@@ -4,7 +4,6 @@ import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 import md5 from 'md5';
-import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
 
 let tempObj = {};
 let tempValue;
@@ -19,13 +18,8 @@ const Create = () => {
   const params = useParams();
   const table = params.table;
 
-  const isAuthenticated = useIsAuthenticated();
-  const auth = useAuthUser();
   useEffect(() => {
     FetchData();
-    if (!isAuthenticated || auth().userType !== 'admin') {
-      navigate('/');
-    }
   }, []);
 
   useEffect(() => {
@@ -113,7 +107,7 @@ const Create = () => {
           <Button variant="outlined" sx={{p: '1rem'}} onClick={handleSubmit}>
             Iesniegt
           </Button>
-          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleCancel}>
+          <Button variant="outlined" onClick={handleCancel}>
             Atcelt
           </Button>
         </Paper>

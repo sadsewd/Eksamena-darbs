@@ -10,7 +10,6 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
 
 const Database = () => {
   const [table, setTable] = useState('');
@@ -19,15 +18,6 @@ const Database = () => {
   const [temp, setTemp] = useState({});
 
   const navigate = useNavigate();
-
-  const isAuthenticated = useIsAuthenticated();
-  const auth = useAuthUser();
-
-  useEffect(() => {
-    if (!isAuthenticated || auth().userType !== 'admin') {
-      navigate('/');
-    }
-  }, []);
 
   useEffect(() => {
     setkeys([]);
