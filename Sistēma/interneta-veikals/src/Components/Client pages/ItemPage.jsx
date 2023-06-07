@@ -193,6 +193,8 @@ const ItemPage = () => {
                   <Button onClick={handleMinus}>-</Button>
                 </ButtonGroup>
               </Tooltip>
+              <Typography sx={{color: 'gray'}}>Pieejams: {data.daudzums_noliktava}</Typography>
+
               <Button variant="outlined" value={data.id} onClick={handleAddToCart} sx={{ bottom: '0', width: '100%' }}>
                 Ielikt grozā
               </Button>
