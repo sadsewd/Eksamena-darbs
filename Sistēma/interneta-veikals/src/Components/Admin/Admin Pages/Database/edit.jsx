@@ -70,8 +70,13 @@ const Edit = () => {
   const handleSubmit = event => {
     event.preventDefault();
     delete tempObj.id;
-    updateData = new URLSearchParams(Object.entries(tempObj)).toString();
-    UpdataData();
+    const isEmpty = Object.values(tempObj).every(x => x === '');
+    if(isEmpty){
+      handleCancel();
+    }else{
+      updateData = new URLSearchParams(Object.entries(tempObj)).toString();
+      UpdataData();
+    }
   };
 
   const handleInput = event => {
@@ -115,7 +120,7 @@ const Edit = () => {
                 <TextField
                   sx={{ width: '100%' }}
                   name={key}
-                  placeholder={data[key]}
+                  placeholder={data[key].toString()}
                   onChange={handleInput}
                   InputProps={{
                     readOnly: isreadonly,
@@ -125,10 +130,10 @@ const Edit = () => {
               </div>
             );
           })}
-          <Button variant="outlined" onClick={handleSubmit}>
+          <Button variant="outlined"  sx={{p: '1rem'}} onClick={handleSubmit}>
             Iesniegt
           </Button>
-          <Button variant="outlined" onClick={handleCancel}>
+          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleCancel}>
             Atcelt
           </Button>
         </Paper>

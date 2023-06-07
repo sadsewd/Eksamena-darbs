@@ -110,10 +110,10 @@ const Create = () => {
               </div>
             );
           })}
-          <Button variant="outlined" onClick={handleSubmit}>
+          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleSubmit}>
             Iesniegt
           </Button>
-          <Button variant="outlined" onClick={handleCancel}>
+          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleCancel}>
             Atcelt
           </Button>
         </Paper>
