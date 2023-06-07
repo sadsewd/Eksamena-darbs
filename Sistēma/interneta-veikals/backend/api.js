@@ -316,9 +316,9 @@ app.get('/informacija/:id', (req, res) => {
 });
 
 app.post('/informacija', (req, res) => {
-  const query = 'INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`) VALUES (?)';
+  const query = 'INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`, Lietotaji_id,`epasts`,`talr_nr`) VALUES (?)';
 
-  const values = [req.body.adrese, req.body.pilseta, req.body.zip_kods, req.body.vards, req.body.uzvards];
+  const values = [req.body.adrese, req.body.pilseta, req.body.zip_kods, req.body.vards, req.body.uzvards, req.body.Lietotaji_id, req.body.epasts, req.body.talr_nr];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
@@ -338,9 +338,9 @@ app.delete('/informacija/:id', (req, res) => {
 app.put('/informacija/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ? WHERE id = ?';
+    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?, `Lietotaji_id` = ?, `epasts` = ?, `talr_nr` = ? WHERE id = ?';
 
-  const values = [req.body.adrese, req.body.pilseta, req.body.zip_kods, req.body.vards, req.body.uzvards];
+  const values = [req.body.adrese, req.body.pilseta, req.body.zip_kods, req.body.vards, req.body.uzvards,req.body.Lietotaji_id, req.body.epasts, req.body.talr_nr];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
@@ -420,10 +420,10 @@ app.get('/lietotaji/:id', (req, res) => {
 });
 
 app.post('/lietotaji', (req, res) => {
-  const query = 'INSERT INTO lietotaji(`lietotajvards`,`parole`,`epasta_adrese`,`talr_nr`) VALUES (?)';
+  const query = 'INSERT INTO lietotaji(`lietotajvards`,`parole`) VALUES (?)';
 
-  const values = [req.body.lietotajvards, req.body.parole, req.body.epasta_adrese, req.body.talr_nr];
-  db.query(query, [id], [values], (err, data) => {
+  const values = [req.body.lietotajvards, req.body.parole];
+  db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });
@@ -441,9 +441,9 @@ app.delete('/lietotaji/:id', (req, res) => {
 
 app.put('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
-  const query = 'UPDATE lietotaji SET `lietotajvards`= ?, `parole`= ?, `epasta_adrese`= ?, `talr_nr`= ? WHERE id = ?';
+  const query = 'UPDATE lietotaji SET `lietotajvards`= ?, `parole`= ? WHERE id = ?';
 
-  const values = [req.body.lietotajvards, req.body.parole, req.body.epasta_adrese, req.body.talr_nr];
+  const values = [req.body.lietotajvards, req.body.parole];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
