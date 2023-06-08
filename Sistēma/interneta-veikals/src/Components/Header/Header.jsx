@@ -30,8 +30,12 @@ function Header() {
   const [authStatus, setAuthStatus] = useState(false);
   const signOut = useSignOut();
   const [SearchTerm, setSearchTerm] = useState('');
+  const location = useLocation().pathname;
 
   useEffect(() => {
+    if (location !== '/cart' && location !== '/payment') {
+      localStorage.removeItem('price');
+    }
     setCartItems(localStorage.length);
     if (isAuthenticated() && auth().userType === 'client') {
       setAuthStatus(true);
