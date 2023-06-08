@@ -1,9 +1,9 @@
-import express from "express";
-import mysql from "mysql";
-import cors from "cors";
-import bodyParser from "body-parser";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import express from 'express';
+import mysql from 'mysql';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(cors());
@@ -13,34 +13,44 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "admin",
-  password: "vHCMkV0@wb5c",
-  database: "datubaze",
+  host: 'localhost',
+  user: 'admin',
+  password: 'vHCMkV0@wb5c',
+  database: 'datubaze',
 });
 
 app.listen(5001, () => {
-  console.log("Connected to backend.");
+  console.log('Connected to backend.');
 });
 
+/*Apmaksa*/
+app.get('/apmaksasInfo/', (req, res) => {
+  const query = `select max(a.id)+1 as pasID, max(c.id)+1 as statID from informacija a inner join pasutijumi b on a.id = b.informacija_id inner join pasutijuma_status c on b.Pasutijuma_status_id = c.id;`;
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+/*Apmaksa BEIGAS*/
+
 /*Admin parskats*/
-app.get("/precuInfo/", (req, res) => {
+app.get('/precuInfo/', (req, res) => {
   const query =
-    "select count(produkta_info.id) as skaits, sum(produkta_info.daudzums_noliktava) as daudzums from produkta_info;";
+    'select count(produkta_info.id) as skaits, sum(produkta_info.daudzums_noliktava) as daudzums from produkta_info;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
-app.get("/klientuInfo/", (req, res) => {
-  const query = "select count(id) as skaits from Lietotaji;";
+app.get('/klientuInfo/', (req, res) => {
+  const query = 'select count(id) as skaits from Lietotaji;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
-app.get("/pasutijumuInfo/", (req, res) => {
-  const query = "select count(id) as skaits from pasutijumi;";
+app.get('/pasutijumuInfo/', (req, res) => {
+  const query = 'select count(id) as skaits from pasutijumi;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -49,9 +59,9 @@ app.get("/pasutijumuInfo/", (req, res) => {
 /*Admin parskats BEIGAS*/
 
 /*grozaprodukti*/
-app.get("/grozaprodukti/", (req, res) => {
+app.get('/grozaprodukti/', (req, res) => {
   const query =
-    "select DISTINCT produkti.id, produkti.nosaukums, produkti.attels, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id;";
+    'select DISTINCT produkti.id, produkti.nosaukums, produkti.attels, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -60,19 +70,19 @@ app.get("/grozaprodukti/", (req, res) => {
 /*grozaprodukti beigas*/
 
 /*Item page fetch*/
-app.get("/prece/:id", (req, res) => {
+app.get('/prece/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "select produkti.id, produkti.nosaukums,produkti.apraksts, produkti.attels, produkta_info.cena , produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ? limit 1;";
+    'select produkti.id, produkti.nosaukums,produkti.apraksts, produkti.attels, produkta_info.cena , produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ? limit 1;';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
-app.get("/variacijasDati/:id", (req, res) => {
+app.get('/variacijasDati/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "select  variacijas.nosaukums as variacijas_nos, variacijas_dati.vertiba as variacijas_vert from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ?";
+    'select  variacijas.nosaukums as variacijas_nos, variacijas_dati.vertiba as variacijas_vert from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id inner join produkta_info_has_variacijas_dati on produkta_info.id = produkta_info_has_variacijas_dati.Produkta_info_id inner join variacijas_dati on produkta_info_has_variacijas_dati.Variacijas_dati_id = variacijas_dati.id inner join variacijas on variacijas.id = variacijas_dati.Variacijas_id where produkti.id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -82,35 +92,35 @@ app.get("/variacijasDati/:id", (req, res) => {
 
 /*Home page fetch*/
 
-app.get("/kategorijasPreces/:id", (req, res) => {
+app.get('/kategorijasPreces/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id where kategorijas.id = ?;";
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id where kategorijas.id = ?;';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/visasPreces", (req, res) => {
+app.get('/visasPreces', (req, res) => {
   const query =
-    "select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id;";
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
-app.get("/jaunakie", (req, res) => {
+app.get('/jaunakie', (req, res) => {
   const query =
-    "select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;";
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pievienosanas_datums desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
-app.get("/popularakie", (req, res) => {
+app.get('/popularakie', (req, res) => {
   const query =
-    "select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 8;";
+    'select produkti.id, produkti.nosaukums, produkti.attels, kategorijas.nosaukums as kategorija, produkta_info.cena, produkta_info.daudzums_noliktava from produkti inner join produkta_info on produkti.id = produkta_info.Produkti_id inner join kategorijas on produkti.Kategorijas_id = kategorijas.id order by produkta_info.pirkumu_skaits desc limit 8;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -120,16 +130,12 @@ app.get("/popularakie", (req, res) => {
 
 /*Login*/
 
-app.get("/klientLogin/:lietotajvards/:parole", (req, res) => {
+app.get('/klientLogin/:lietotajvards/:parole', (req, res) => {
   const lietotajvards = req.params.lietotajvards;
   const parole = req.params.parole;
-  const jwtToken = jwt.sign(
-    { lietotajvards: lietotajvards },
-    process.env.JWT_KEY
-  );
+  const jwtToken = jwt.sign({ lietotajvards: lietotajvards }, process.env.JWT_KEY);
 
-  const query =
-    "SELECT * FROM lietotaji WHERE parole = ? AND lietotajvards = ?";
+  const query = 'SELECT * FROM lietotaji WHERE parole = ? AND lietotajvards = ?';
   db.query(query, [parole, lietotajvards], (err, data) => {
     if (err) return res.json(err);
     res.set({ token: jwtToken });
@@ -137,16 +143,12 @@ app.get("/klientLogin/:lietotajvards/:parole", (req, res) => {
   });
 });
 
-app.get("/adminLogin/:lietotajvards/:parole", (req, res) => {
+app.get('/adminLogin/:lietotajvards/:parole', (req, res) => {
   const lietotajvards = req.params.lietotajvards;
   const parole = req.params.parole;
-  const jwtToken = jwt.sign(
-    { lietotajvards: lietotajvards },
-    process.env.JWT_KEY
-  );
+  const jwtToken = jwt.sign({ lietotajvards: lietotajvards }, process.env.JWT_KEY);
 
-  const query =
-    "SELECT * FROM administracija WHERE parole = ? AND lietotajvards = ?";
+  const query = 'SELECT * FROM administracija WHERE parole = ? AND lietotajvards = ?';
   db.query(query, [parole, lietotajvards], (err, data) => {
     if (err) return res.json(err);
     res.set({ token: jwtToken });
@@ -157,26 +159,25 @@ app.get("/adminLogin/:lietotajvards/:parole", (req, res) => {
 
 /*ADMINISTRĀCIJA*/
 
-app.get("/administracija", (req, res) => {
-  const query = "SELECT * FROM administracija";
+app.get('/administracija', (req, res) => {
+  const query = 'SELECT * FROM administracija';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/administracija/:id", (req, res) => {
+app.get('/administracija/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM administracija WHERE id = ?";
+  const query = 'SELECT * FROM administracija WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/administracija", (req, res) => {
-  const query =
-    "INSERT INTO administracija(`lietotajvards`, `parole`) VALUES (?)";
+app.post('/administracija', (req, res) => {
+  const query = 'INSERT INTO administracija(`lietotajvards`, `parole`) VALUES (?)';
 
   const values = [req.body.lietotajvards, req.body.parole];
   db.query(query, [values], (err, data) => {
@@ -185,9 +186,9 @@ app.post("/administracija", (req, res) => {
   });
 });
 
-app.delete("/administracija/:id", (req, res) => {
+app.delete('/administracija/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM administracija WHERE id = ? ";
+  const query = ' DELETE FROM administracija WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -195,10 +196,9 @@ app.delete("/administracija/:id", (req, res) => {
   });
 });
 
-app.put("/administracija/:id", (req, res) => {
+app.put('/administracija/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE administracija SET `lietotajvards`= ?, `parole`= ? WHERE id = ?";
+  const query = 'UPDATE administracija SET `lietotajvards`= ?, `parole`= ? WHERE id = ?';
 
   const values = [req.body.lietotajvards, req.body.parole];
 
@@ -212,25 +212,25 @@ app.put("/administracija/:id", (req, res) => {
 
 /*GROZS*/
 
-app.get("/grozs", (req, res) => {
-  const query = "SELECT * FROM grozs";
+app.get('/grozs', (req, res) => {
+  const query = 'SELECT * FROM grozs';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/grozs/:id", (req, res) => {
+app.get('/grozs/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM grozs WHERE id = ?";
+  const query = 'SELECT * FROM grozs WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/grozs", (req, res) => {
-  const query = "INSERT INTO grozs(`Lietotaji_id`) VALUES (?)";
+app.post('/grozs', (req, res) => {
+  const query = 'INSERT INTO grozs(`Lietotaji_id`) VALUES (?)';
 
   const values = [req.body.Lietotaji_id];
   db.query(query, [values], (err, data) => {
@@ -239,9 +239,9 @@ app.post("/grozs", (req, res) => {
   });
 });
 
-app.delete("/grozs/:id", (req, res) => {
+app.delete('/grozs/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM grozs WHERE id = ? ";
+  const query = ' DELETE FROM grozs WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -249,9 +249,9 @@ app.delete("/grozs/:id", (req, res) => {
   });
 });
 
-app.put("/grozs/:id", (req, res) => {
+app.put('/grozs/:id', (req, res) => {
   const id = req.params.id;
-  const query = "UPDATE grozs SET `Lietotaji_id`= ? WHERE id = ?";
+  const query = 'UPDATE grozs SET `Lietotaji_id`= ? WHERE id = ?';
 
   const values = [req.body.Lietotaji_id];
 
@@ -265,41 +265,36 @@ app.put("/grozs/:id", (req, res) => {
 
 /*GROZA_PRODUKTS*/
 
-app.get("/groza_produkts", (req, res) => {
-  const query = "SELECT * FROM groza_produkts";
+app.get('/groza_produkts', (req, res) => {
+  const query = 'SELECT * FROM groza_produkts';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/groza_produkts/:id", (req, res) => {
+app.get('/groza_produkts/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM groza_produkts WHERE id = ?";
+  const query = 'SELECT * FROM groza_produkts WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/groza_produkts", (req, res) => {
-  const query =
-    "INSERT INTO groza_produkts(`lietotajvards`, `parole`) VALUES (?)";
+app.post('/groza_produkts', (req, res) => {
+  const query = 'INSERT INTO groza_produkts(`lietotajvards`, `parole`) VALUES (?)';
 
-  const values = [
-    req.body.daudzums,
-    req.body.Grozs_id,
-    req.body.Produkta_info_id,
-  ];
+  const values = [req.body.daudzums, req.body.Grozs_id, req.body.Produkta_info_id];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });
 });
 
-app.delete("/groza_produkts/:id", (req, res) => {
+app.delete('/groza_produkts/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM groza_produkts WHERE id = ? ";
+  const query = ' DELETE FROM groza_produkts WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -307,16 +302,11 @@ app.delete("/groza_produkts/:id", (req, res) => {
   });
 });
 
-app.put("/groza_produkts/:id", (req, res) => {
+app.put('/groza_produkts/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE groza_produkts SET `daudzums`= ?, `Grozs_id` = ?, `Produkta_info_id` = ? WHERE id = ?";
+  const query = 'UPDATE groza_produkts SET `daudzums`= ?, `Grozs_id` = ?, `Produkta_info_id` = ? WHERE id = ?';
 
-  const values = [
-    req.body.daudzums,
-    req.body.Grozs_id,
-    req.body.Produkta_info_id,
-  ];
+  const values = [req.body.daudzums, req.body.Grozs_id, req.body.Produkta_info_id];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
@@ -328,26 +318,26 @@ app.put("/groza_produkts/:id", (req, res) => {
 
 /*informacija*/
 
-app.get("/informacija", (req, res) => {
-  const query = "SELECT * FROM informacija";
+app.get('/informacija', (req, res) => {
+  const query = 'SELECT * FROM informacija';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/informacija/:id", (req, res) => {
+app.get('/informacija/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM informacija WHERE id = ?";
+  const query = 'SELECT * FROM informacija WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/informacija", (req, res) => {
+app.post('/informacija', (req, res) => {
   const query =
-    "INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`, Lietotaji_id,`epasts`,`talr_nr`) VALUES (?)";
+    'INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`, Lietotaji_id,`epasts`,`talr_nr`) VALUES (?)';
 
   const values = [
     req.body.adrese,
@@ -365,9 +355,9 @@ app.post("/informacija", (req, res) => {
   });
 });
 
-app.delete("/informacija/:id", (req, res) => {
+app.delete('/informacija/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM informacija WHERE id = ? ";
+  const query = ' DELETE FROM informacija WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -375,10 +365,10 @@ app.delete("/informacija/:id", (req, res) => {
   });
 });
 
-app.put("/informacija/:id", (req, res) => {
+app.put('/informacija/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?, `Lietotaji_id` = ?, `epasts` = ?, `talr_nr` = ? WHERE id = ?";
+    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?, `Lietotaji_id` = ?, `epasts` = ?, `talr_nr` = ? WHERE id = ?';
 
   const values = [
     req.body.adrese,
@@ -400,25 +390,25 @@ app.put("/informacija/:id", (req, res) => {
 /*informacija BEIGAS*/
 
 /*`kategorijas`*/
-app.get("/kategorijas", (req, res) => {
-  const query = "SELECT * FROM kategorijas";
+app.get('/kategorijas', (req, res) => {
+  const query = 'SELECT * FROM kategorijas';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/kategorijas/:id", (req, res) => {
+app.get('/kategorijas/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM kategorijas WHERE id = ?";
+  const query = 'SELECT * FROM kategorijas WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/kategorijas", (req, res) => {
-  const query = "INSERT INTO kategorijas(`nosaukums`) VALUES (?)";
+app.post('/kategorijas', (req, res) => {
+  const query = 'INSERT INTO kategorijas(`nosaukums`) VALUES (?)';
 
   const values = [req.body.nosaukums];
   db.query(query, [values], (err, data) => {
@@ -427,9 +417,9 @@ app.post("/kategorijas", (req, res) => {
   });
 });
 
-app.delete("/kategorijas/:id", (req, res) => {
+app.delete('/kategorijas/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM kategorijas WHERE id = ? ";
+  const query = ' DELETE FROM kategorijas WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -437,9 +427,9 @@ app.delete("/kategorijas/:id", (req, res) => {
   });
 });
 
-app.put("/kategorijas/:id", (req, res) => {
+app.put('/kategorijas/:id', (req, res) => {
   const id = req.params.id;
-  const query = "UPDATE kategorijas SET `nosaukums`= ? WHERE id = ?";
+  const query = 'UPDATE kategorijas SET `nosaukums`= ? WHERE id = ?';
 
   const values = [req.body.nosaukums];
 
@@ -451,25 +441,25 @@ app.put("/kategorijas/:id", (req, res) => {
 /*`kategorijas` BEIGAS*/
 
 /*`lietotaji`*/
-app.get("/lietotaji", (req, res) => {
-  const query = "SELECT * FROM lietotaji";
+app.get('/lietotaji', (req, res) => {
+  const query = 'SELECT * FROM lietotaji';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/lietotaji/:id", (req, res) => {
+app.get('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM lietotaji WHERE id = ?";
+  const query = 'SELECT * FROM lietotaji WHERE id = ?';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/lietotaji", (req, res) => {
-  const query = "INSERT INTO lietotaji(`lietotajvards`,`parole`) VALUES (?)";
+app.post('/lietotaji', (req, res) => {
+  const query = 'INSERT INTO lietotaji(`lietotajvards`,`parole`) VALUES (?)';
 
   const values = [req.body.lietotajvards, req.body.parole];
   db.query(query, [values], (err, data) => {
@@ -478,9 +468,9 @@ app.post("/lietotaji", (req, res) => {
   });
 });
 
-app.delete("/lietotaji/:id", (req, res) => {
+app.delete('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM lietotaji WHERE id = ? ";
+  const query = ' DELETE FROM lietotaji WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -488,10 +478,9 @@ app.delete("/lietotaji/:id", (req, res) => {
   });
 });
 
-app.put("/lietotaji/:id", (req, res) => {
+app.put('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE lietotaji SET `lietotajvards`= ?, `parole`= ? WHERE id = ?";
+  const query = 'UPDATE lietotaji SET `lietotajvards`= ?, `parole`= ? WHERE id = ?';
 
   const values = [req.body.lietotajvards, req.body.parole];
 
@@ -503,26 +492,25 @@ app.put("/lietotaji/:id", (req, res) => {
 /*`lietotaji` BEIGAS*/
 
 /*`pasutijuma_pakalpojums`*/
-app.get("/pasutijuma_pakalpojums", (req, res) => {
-  const query = "SELECT * FROM pasutijuma_pakalpojums";
+app.get('/pasutijuma_pakalpojums', (req, res) => {
+  const query = 'SELECT * FROM pasutijuma_pakalpojums';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/pasutijuma_pakalpojums/:id", (req, res) => {
+app.get('/pasutijuma_pakalpojums/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM pasutijuma_pakalpojums WHERE id ?";
+  const query = 'SELECT * FROM pasutijuma_pakalpojums WHERE id ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/pasutijuma_pakalpojums", (req, res) => {
-  const query =
-    "INSERT INTO pasutijuma_pakalpojums(`Pakalpojuma_sniedzejs`,`Cena`) VALUES (?)";
+app.post('/pasutijuma_pakalpojums', (req, res) => {
+  const query = 'INSERT INTO pasutijuma_pakalpojums(`Pakalpojuma_sniedzejs`,`Cena`) VALUES (?)';
 
   const values = [req.body.Pakalpojuma_sniedzejs, req.body.Cena];
   db.query(query, [values], (err, data) => {
@@ -531,9 +519,9 @@ app.post("/pasutijuma_pakalpojums", (req, res) => {
   });
 });
 
-app.delete("/pasutijuma_pakalpojums/:id", (req, res) => {
+app.delete('/pasutijuma_pakalpojums/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM pasutijuma_pakalpojums WHERE id = ? ";
+  const query = ' DELETE FROM pasutijuma_pakalpojums WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -541,10 +529,9 @@ app.delete("/pasutijuma_pakalpojums/:id", (req, res) => {
   });
 });
 
-app.put("/pasutijuma_pakalpojums/:id", (req, res) => {
+app.put('/pasutijuma_pakalpojums/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE pasutijuma_pakalpojums SET `Pakalpojuma_sniedzejs`= ?, `Cena`= ? WHERE id = ?";
+  const query = 'UPDATE pasutijuma_pakalpojums SET `Pakalpojuma_sniedzejs`= ?, `Cena`= ? WHERE id = ?';
 
   const values = [req.body.Pakalpojuma_sniedzejs, req.body.Cena];
 
@@ -556,25 +543,25 @@ app.put("/pasutijuma_pakalpojums/:id", (req, res) => {
 /*`pasutijuma_pakalpojums` BEIGAS*/
 
 /*`pasutijuma_status`*/
-app.get("/pasutijuma_status", (req, res) => {
-  const query = "SELECT * FROM pasutijuma_status";
+app.get('/pasutijuma_status', (req, res) => {
+  const query = 'SELECT * FROM pasutijuma_status';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/pasutijuma_status/:id", (req, res) => {
+app.get('/pasutijuma_status/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM pasutijuma_status WHERE id = ?";
+  const query = 'SELECT * FROM pasutijuma_status WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/pasutijuma_status", (req, res) => {
-  const query = "INSERT INTO pasutijuma_status(`status`) VALUES (?)";
+app.post('/pasutijuma_status', (req, res) => {
+  const query = 'INSERT INTO pasutijuma_status(`status`) VALUES (?)';
 
   const values = [req.body.status];
   db.query(query, [values], (err, data) => {
@@ -583,9 +570,9 @@ app.post("/pasutijuma_status", (req, res) => {
   });
 });
 
-app.delete("/pasutijuma_status/:id", (req, res) => {
+app.delete('/pasutijuma_status/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM pasutijuma_status WHERE id = ? ";
+  const query = ' DELETE FROM pasutijuma_status WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -593,9 +580,9 @@ app.delete("/pasutijuma_status/:id", (req, res) => {
   });
 });
 
-app.put("/pasutijuma_status/:id", (req, res) => {
+app.put('/pasutijuma_status/:id', (req, res) => {
   const id = req.params.id;
-  const query = "UPDATE pasutijuma_status SET `status`= ? WHERE id = ?";
+  const query = 'UPDATE pasutijuma_status SET `status`= ? WHERE id = ?';
 
   const values = [req.body.status];
 
@@ -607,26 +594,26 @@ app.put("/pasutijuma_status/:id", (req, res) => {
 /*`pasutijuma_status` BEIGAS*/
 
 /*`pasutijumi`*/
-app.get("/pasutijumi", (req, res) => {
-  const query = "SELECT * FROM pasutijumi";
+app.get('/pasutijumi', (req, res) => {
+  const query = 'SELECT * FROM pasutijumi';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/pasutijumi/:id", (req, res) => {
+app.get('/pasutijumi/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM pasutijumi WHERE id = ?";
+  const query = 'SELECT * FROM pasutijumi WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/pasutijumi", (req, res) => {
+app.post('/pasutijumi', (req, res) => {
   const query =
-    "INSERT INTO pasutijumi(`kopsumma`,`pasutijuma_datums`,`Lietotaji_id`,`Pasutijuma_pakalpojums_id`,`Pasutijuma_status_id`,`informacija_id`) VALUES (?)";
+    'INSERT INTO pasutijumi(`kopsumma`,`pasutijuma_datums`,`Lietotaji_id`,`Pasutijuma_pakalpojums_id`,`Pasutijuma_status_id`,`informacija_id`) VALUES (?)';
 
   const values = [
     req.body.kopsumma,
@@ -642,9 +629,9 @@ app.post("/pasutijumi", (req, res) => {
   });
 });
 
-app.delete("/pasutijumi/:id", (req, res) => {
+app.delete('/pasutijumi/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM pasutijumi WHERE id = ? ";
+  const query = ' DELETE FROM pasutijumi WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -652,10 +639,10 @@ app.delete("/pasutijumi/:id", (req, res) => {
   });
 });
 
-app.put("/pasutijumi/:id", (req, res) => {
+app.put('/pasutijumi/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "UPDATE pasutijumi SET `kopsumma`= ?, `pasutijuma_datums`= ?, `Lietotaji_id`= ?, `Pasutijuma_pakalpojums_id`= ? ,`Pasutijuma_status_id`= ? ,`informacija_id`= ? WHERE id = ?";
+    'UPDATE pasutijumi SET `kopsumma`= ?, `pasutijuma_datums`= ?, `Lietotaji_id`= ?, `Pasutijuma_pakalpojums_id`= ? ,`Pasutijuma_status_id`= ? ,`informacija_id`= ? WHERE id = ?';
 
   const values = [
     req.body.kopsumma,
@@ -673,42 +660,36 @@ app.put("/pasutijumi/:id", (req, res) => {
 /*`pasutijumi` BEIGAS*/
 
 /*`produkta_info`*/
-app.get("/produkta_info", (req, res) => {
-  const query = "SELECT * FROM produkta_info";
+app.get('/produkta_info', (req, res) => {
+  const query = 'SELECT * FROM produkta_info';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/produkta_info/:id", (req, res) => {
+app.get('/produkta_info/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM produkta_info WHERE id = ?";
+  const query = 'SELECT * FROM produkta_info WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/produkta_info", (req, res) => {
-  const query =
-    "INSERT INTO produkta_info(`Produkti_id`,`daudzums_noliktava`,`cena`,`attels`) VALUES (?)";
+app.post('/produkta_info', (req, res) => {
+  const query = 'INSERT INTO produkta_info(`Produkti_id`,`daudzums_noliktava`,`cena`,`attels`) VALUES (?)';
 
-  const values = [
-    req.body.Produkti_id,
-    req.body.daudzums_noliktava,
-    req.body.cena,
-    req.body.attels,
-  ];
+  const values = [req.body.Produkti_id, req.body.daudzums_noliktava, req.body.cena, req.body.attels];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });
 });
 
-app.delete("/produkta_info/:id", (req, res) => {
+app.delete('/produkta_info/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM produkta_info WHERE id = ? ";
+  const query = ' DELETE FROM produkta_info WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -716,17 +697,12 @@ app.delete("/produkta_info/:id", (req, res) => {
   });
 });
 
-app.put("/produkta_info/:id", (req, res) => {
+app.put('/produkta_info/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "UPDATE produkta_info SET `Produkti_id`= ?, `daudzums_noliktava`= ?, `cena`= ?, `attels`= ? WHERE id = ?";
+    'UPDATE produkta_info SET `Produkti_id`= ?, `daudzums_noliktava`= ?, `cena`= ?, `attels`= ? WHERE id = ?';
 
-  const values = [
-    req.body.Produkti_id,
-    req.body.daudzums_noliktava,
-    req.body.cena,
-    req.body.attels,
-  ];
+  const values = [req.body.Produkti_id, req.body.daudzums_noliktava, req.body.cena, req.body.attels];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
@@ -736,26 +712,25 @@ app.put("/produkta_info/:id", (req, res) => {
 /*`produkta_info` BEIGAS*/
 
 /*`produkta_info_has_variacijas_dati`*/
-app.get("/produkta_info_has_variacijas_dati", (req, res) => {
-  const query = "SELECT * FROM Produkta_info_has_variacijas_dati";
+app.get('/produkta_info_has_variacijas_dati', (req, res) => {
+  const query = 'SELECT * FROM Produkta_info_has_variacijas_dati';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/produkta_info_has_variacijas_dati/:id", (req, res) => {
+app.get('/produkta_info_has_variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM produkta_info_has_variacijas_dati WHERE id = ?";
+  const query = 'SELECT * FROM produkta_info_has_variacijas_dati WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/produkta_info_has_variacijas_dati", (req, res) => {
-  const query =
-    "INSERT INTO produkta_info_has_variacijas_dati(`Produkta_info_id`,`Variacijas_dati_id`) VALUES (?)";
+app.post('/produkta_info_has_variacijas_dati', (req, res) => {
+  const query = 'INSERT INTO produkta_info_has_variacijas_dati(`Produkta_info_id`,`Variacijas_dati_id`) VALUES (?)';
 
   const values = [req.body.Produkta_info_id, req.body.Variacijas_dati_id];
   db.query(query, [values], (err, data) => {
@@ -764,9 +739,9 @@ app.post("/produkta_info_has_variacijas_dati", (req, res) => {
   });
 });
 
-app.delete("/produkta_info_has_variacijas_dati/:id", (req, res) => {
+app.delete('/produkta_info_has_variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM produkta_info_has_variacijas_dati WHERE id = ? ";
+  const query = ' DELETE FROM produkta_info_has_variacijas_dati WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -774,10 +749,10 @@ app.delete("/produkta_info_has_variacijas_dati/:id", (req, res) => {
   });
 });
 
-app.put("/produkta_info_has_variacijas_dati/:id", (req, res) => {
+app.put('/produkta_info_has_variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    "UPDATE produkta_info_has_variacijas_dati SET `Produkta_info_id`= ?, `Variacijas_dati_id`= ? WHERE id = ?";
+    'UPDATE produkta_info_has_variacijas_dati SET `Produkta_info_id`= ?, `Variacijas_dati_id`= ? WHERE id = ?';
 
   const values = [req.body.Produkta_info_id, req.body.Variacijas_dati_id];
 
@@ -789,42 +764,36 @@ app.put("/produkta_info_has_variacijas_dati/:id", (req, res) => {
 /*`produkta_info_has_variacijas_dati` BEIGAS*/
 
 /*`produkti` */
-app.get("/produkti", (req, res) => {
-  const query = "SELECT * FROM produkti";
+app.get('/produkti', (req, res) => {
+  const query = 'SELECT * FROM produkti';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/produkti/:id", (req, res) => {
+app.get('/produkti/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM produkti WHERE id = ?";
+  const query = 'SELECT * FROM produkti WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/produkti", (req, res) => {
-  const query =
-    "INSERT INTO produkti(`nosaukums`,`apraksts`,`attels`,`Kategorijas_id`) VALUES (?)";
+app.post('/produkti', (req, res) => {
+  const query = 'INSERT INTO produkti(`nosaukums`,`apraksts`,`attels`,`Kategorijas_id`) VALUES (?)';
 
-  const values = [
-    req.body.nosaukums,
-    req.body.apraksts,
-    req.body.attels,
-    req.body.Kategorijas_id,
-  ];
+  const values = [req.body.nosaukums, req.body.apraksts, req.body.attels, req.body.Kategorijas_id];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });
 });
 
-app.delete("/produkti/:id", (req, res) => {
+app.delete('/produkti/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM produkti WHERE id = ? ";
+  const query = ' DELETE FROM produkti WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -832,17 +801,11 @@ app.delete("/produkti/:id", (req, res) => {
   });
 });
 
-app.put("/produkti/:id", (req, res) => {
+app.put('/produkti/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE produkti SET `nosaukums`= ?, `apraksts`= ?, `attels`= ?, `Kategorijas_id`= ? WHERE id = ?";
+  const query = 'UPDATE produkti SET `nosaukums`= ?, `apraksts`= ?, `attels`= ?, `Kategorijas_id`= ? WHERE id = ?';
 
-  const values = [
-    req.body.nosaukums,
-    req.body.apraksts,
-    req.body.attels,
-    req.body.Kategorijas_id,
-  ];
+  const values = [req.body.nosaukums, req.body.apraksts, req.body.attels, req.body.Kategorijas_id];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
@@ -852,26 +815,25 @@ app.put("/produkti/:id", (req, res) => {
 /*`produkti` BEIGAS*/
 
 /*`variacijas`*/
-app.get("/variacijas", (req, res) => {
-  const query = "SELECT * FROM variacijas";
+app.get('/variacijas', (req, res) => {
+  const query = 'SELECT * FROM variacijas';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/variacijas/:id", (req, res) => {
+app.get('/variacijas/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM variacijas WHERE id = ?";
+  const query = 'SELECT * FROM variacijas WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/variacijas", (req, res) => {
-  const query =
-    "INSERT INTO variacijas(`nosaukums`,`Kategorijas_id`) VALUES (?)";
+app.post('/variacijas', (req, res) => {
+  const query = 'INSERT INTO variacijas(`nosaukums`,`Kategorijas_id`) VALUES (?)';
 
   const values = [req.body.nosaukums, req.body.Kategorijas_id];
   db.query(query, [values], (err, data) => {
@@ -880,9 +842,9 @@ app.post("/variacijas", (req, res) => {
   });
 });
 
-app.delete("/variacijas/:id", (req, res) => {
+app.delete('/variacijas/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM variacijas WHERE id = ? ";
+  const query = ' DELETE FROM variacijas WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -890,10 +852,9 @@ app.delete("/variacijas/:id", (req, res) => {
   });
 });
 
-app.put("/variacijas/:id", (req, res) => {
+app.put('/variacijas/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE variacijas SET `nosaukums`= ?, `Kategorijas_id`= ? WHERE id = ?";
+  const query = 'UPDATE variacijas SET `nosaukums`= ?, `Kategorijas_id`= ? WHERE id = ?';
 
   const values = [req.body.nosaukums, req.body.Kategorijas_id];
 
@@ -905,26 +866,25 @@ app.put("/variacijas/:id", (req, res) => {
 /*`variacijas` BEIGAS*/
 
 /*`variacijas_dati`*/
-app.get("/variacijas_dati", (req, res) => {
-  const query = "SELECT * FROM variacijas_dati";
+app.get('/variacijas_dati', (req, res) => {
+  const query = 'SELECT * FROM variacijas_dati';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/variacijas_dati/:id", (req, res) => {
+app.get('/variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM variacijas_dati WHERE id = ?";
+  const query = 'SELECT * FROM variacijas_dati WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/variacijas_dati", (req, res) => {
-  const query =
-    "INSERT INTO variacijas_dati(`vertiba`,`Variacijas_id`) VALUES (?)";
+app.post('/variacijas_dati', (req, res) => {
+  const query = 'INSERT INTO variacijas_dati(`vertiba`,`Variacijas_id`) VALUES (?)';
 
   const values = [req.body.vertiba, req.body.Variacijas_id];
   db.query(query, [values], (err, data) => {
@@ -933,9 +893,9 @@ app.post("/variacijas_dati", (req, res) => {
   });
 });
 
-app.delete("/variacijas_dati/:id", (req, res) => {
+app.delete('/variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM variacijas_dati WHERE id = ? ";
+  const query = ' DELETE FROM variacijas_dati WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -943,9 +903,9 @@ app.delete("/variacijas_dati/:id", (req, res) => {
   });
 });
 
-app.put("/variacijas_dati/:id", (req, res) => {
+app.put('/variacijas_dati/:id', (req, res) => {
   const id = req.params.id;
-  const query = "UPDATE variacijas_dati SET `vertiba`= ?, `Variacijas_id`= ?";
+  const query = 'UPDATE variacijas_dati SET `vertiba`= ?, `Variacijas_id`= ?';
 
   const values = [req.body.vertiba, req.body.Variacijas_id];
 
@@ -957,41 +917,36 @@ app.put("/variacijas_dati/:id", (req, res) => {
 /*`variacijas_dati` BEIGAS*/
 
 /*`produkti_has_pasutijumi`*/
-app.get("/produkti_has_pasutijumi", (req, res) => {
-  const query = "SELECT * FROM produkti_has_pasutijumi";
+app.get('/produkti_has_pasutijumi', (req, res) => {
+  const query = 'SELECT * FROM produkti_has_pasutijumi';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.get("/produkti_has_pasutijumi/:id", (req, res) => {
+app.get('/produkti_has_pasutijumi/:id', (req, res) => {
   const id = req.params.id;
-  const query = "SELECT * FROM produkti_has_pasutijumi WHERE id = ?";
+  const query = 'SELECT * FROM produkti_has_pasutijumi WHERE id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
 });
 
-app.post("/produkti_has_pasutijumi", (req, res) => {
-  const query =
-    "INSERT INTO produkti_has_pasutijumi(`Produkti_id`,`Pasutijumi_id`, daudzums) VALUES (?)";
+app.post('/produkti_has_pasutijumi', (req, res) => {
+  const query = 'INSERT INTO produkti_has_pasutijumi(`Produkti_id`,`Pasutijumi_id`, daudzums) VALUES (?)';
 
-  const values = [
-    req.body.Produkti_id,
-    req.body.Pasutijumi_id,
-    req.body.daudzums,
-  ];
+  const values = [req.body.Produkti_id, req.body.Pasutijumi_id, req.body.daudzums];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
   });
 });
 
-app.delete("/produkti_has_pasutijumi/:id", (req, res) => {
+app.delete('/produkti_has_pasutijumi/:id', (req, res) => {
   const id = req.params.id;
-  const query = " DELETE FROM produkti_has_pasutijumi WHERE id = ? ";
+  const query = ' DELETE FROM produkti_has_pasutijumi WHERE id = ? ';
 
   db.query(query, [id], (err, data) => {
     if (err) return res.send(err);
@@ -999,16 +954,11 @@ app.delete("/produkti_has_pasutijumi/:id", (req, res) => {
   });
 });
 
-app.put("/produkti_has_pasutijumi/:id", (req, res) => {
+app.put('/produkti_has_pasutijumi/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    "UPDATE produkti_has_pasutijumi SET `Produkti_id`= ?, `Pasutijumi_id`= ?, `daudzums`= ?";
+  const query = 'UPDATE produkti_has_pasutijumi SET `Produkti_id`= ?, `Pasutijumi_id`= ?, `daudzums`= ?';
 
-  const values = [
-    req.body.Produkti_id,
-    req.body.Pasutijumi_id,
-    req.body.daudzums,
-  ];
+  const values = [req.body.Produkti_id, req.body.Pasutijumi_id, req.body.daudzums];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);

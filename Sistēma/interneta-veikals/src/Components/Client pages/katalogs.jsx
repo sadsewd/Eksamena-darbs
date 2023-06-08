@@ -14,7 +14,6 @@ const Katalogs = () => {
   const [katalogs, setkatlogs] = useState(false);
   const location = useLocation();
   const [searchTerm, setsearchTerm] = useState();
-  const [pathname, setpathname] = useState();
 
   useEffect(() => {
     if (Object.keys(params).length === 0 && !location.pathname.includes('/katalogs/termins/')) {
@@ -37,6 +36,11 @@ const Katalogs = () => {
   }, [location]);
 
   let tempObj;
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   function findSearchItems(item) {
     let name = item.nosaukums.toLowerCase();
     let sTerm = searchTerm.toLowerCase();
@@ -57,7 +61,7 @@ const Katalogs = () => {
   const FetchData = async () => {
     try {
       const res = await axios.get(`http://localhost:5001/visasPreces`);
-      if (meklesana) {
+      if (data[0].nosaukums !== undefined) {
         tempObj = res.data.filter(findSearchItems);
         setData(tempObj);
       } else {

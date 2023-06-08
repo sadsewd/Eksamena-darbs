@@ -33,7 +33,7 @@ function Header() {
   const location = useLocation().pathname;
 
   useEffect(() => {
-    if (location !== '/cart' && location !== '/payment') {
+    if (location !== '/payment') {
       localStorage.removeItem('price');
     }
     setCartItems(localStorage.length);

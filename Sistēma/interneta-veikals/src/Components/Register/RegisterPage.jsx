@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
 import md5 from 'md5';
 
-let passwd
-let infoObj
-let info
+let passwd;
+let infoObj;
+let info;
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
@@ -24,8 +24,8 @@ const RegisterPage = () => {
 
   const onSubmit = () => {
     if (username !== '' && password !== '') {
-      passwd = md5(password)
-      infoObj = {lietotajvards: username, parole: passwd}
+      passwd = md5(password);
+      infoObj = { lietotajvards: username, parole: passwd };
       info = new URLSearchParams(Object.entries(infoObj)).toString();
       PostUser();
     } else {
@@ -60,9 +60,11 @@ const RegisterPage = () => {
         <S.Input required type="text" variant="outlined" label="Lietotājvārds" onChange={handleUsernameInput} />
         <S.Input required type="password" variant="outlined" label="Parole" onChange={handlePasswordInput} />
         <S.SButton variant="outlined" onClick={onSubmit}>
-        Reģistrēties
+          Reģistrēties
         </S.SButton>
-        <S.SButton variant="outlined" onClick={() => navigate('login')}>Ielogoties</S.SButton>
+        <S.SButton variant="outlined" onClick={() => navigate('/login')}>
+          Ielogoties
+        </S.SButton>
       </Paper>
     </Container>
   );

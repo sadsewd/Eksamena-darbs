@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const AdminHome = () => {
   const [data, setData] = useState([]);
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     FetchData();
