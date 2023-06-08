@@ -1,6 +1,6 @@
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
-import React, { useEffect, useState } from 'react';
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -14,8 +14,8 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [data, setData] = useState();
@@ -32,27 +32,32 @@ const Cart = () => {
       let cena = Number(object[i].cena);
       let pilnaCena = cena * skaits;
       pilnaCena = Number(pilnaCena.toFixed(2));
-      setfullPrice(prevValue => prevValue + pilnaCena);
+      setfullPrice((prevValue) => prevValue + pilnaCena);
     }
+    console.log(object);
     setData(object);
   };
 
-  const updateFieldChanged = index => event => {
+  const updateFieldChanged = (index) => (event) => {
     let newArr = [...data];
 
-    if (event.target.value === 'plus') {
-      newArr[index].skaits = newArr[index].skaits + 1;
+    if (event.target.value === "plus") {
+      if (newArr[index].skaits < newArr[index].daudzums_noliktava) {
+        newArr[index].skaits = newArr[index].skaits + 1;
+        localStorage.setItem(newArr[index].id, JSON.stringify(newArr[index]));
+      }
+    } else if (event.target.value === "minus") {
+      if (newArr[index].skaits > 1) {
+        newArr[index].skaits = newArr[index].skaits - 1;
+      }
       localStorage.setItem(newArr[index].id, JSON.stringify(newArr[index]));
-    } else if (event.target.value === 'minus') {
-      newArr[index].skaits = newArr[index].skaits - 1;
-      localStorage.setItem(newArr[index].id, JSON.stringify(newArr[index]));
-    } else if (event.target.value === 'delete') {
+    } else if (event.target.value === "delete") {
       localStorage.removeItem(newArr[index].id);
       delete newArr[index];
     }
 
     setData(newArr);
-    setTemp(temp => temp + 1);
+    setTemp((temp) => temp + 1);
   };
 
   useEffect(() => {
@@ -60,12 +65,12 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    setData(items => items.filter(n => n));
-    window.dispatchEvent(new Event('storage'));
+    setData((items) => items.filter((n) => n));
+    window.dispatchEvent(new Event("storage"));
   }, [temp]);
-  //Removes emtpy elementrs from the array, causes an error if not filtered.
+  //Removes emtpy elements from the array, causes an error if not filtered.
 
-  window.addEventListener('storage', () => {
+  window.addEventListener("storage", () => {
     updatePrice();
   });
 
@@ -82,8 +87,8 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    localStorage.setItem('price', JSON.stringify(fullPrice));
-    navigate('/payment');
+    localStorage.setItem("price", JSON.stringify(fullPrice));
+    navigate("/payment");
   };
 
   return (
@@ -91,7 +96,7 @@ const Cart = () => {
       <Header />
       {localStorage.length > 0 ? (
         <>
-          <TableContainer sx={{ mt: '2rem' }} component={Paper}>
+          <TableContainer sx={{ mt: "2rem" }} component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -110,38 +115,57 @@ const Cart = () => {
                           <TableCell>{key.nosaukums}</TableCell>
                           <TableCell>
                             <ButtonGroup variant="contained">
-                              <Button onClick={updateFieldChanged(index)} value="plus">
+                              <Button
+                                onClick={updateFieldChanged(index)}
+                                value="plus"
+                              >
                                 +
                               </Button>
                               <Input
                                 type="number"
-                                sx={{ input: { textAlign: 'center' } }}
+                                sx={{ input: { textAlign: "center" } }}
                                 value={key.skaits}
                                 disabled
                               />
-                              <Button onClick={updateFieldChanged(index)} value="minus">
+                              <Button
+                                onClick={updateFieldChanged(index)}
+                                value="minus"
+                              >
                                 -
                               </Button>
                             </ButtonGroup>
                           </TableCell>
                           <TableCell>{Number(key.cena).toFixed(2)}</TableCell>
-                          <TableCell>{(Number(key.cena).toFixed(2) * key.skaits).toFixed(2)}</TableCell>
                           <TableCell>
-                            <Button variant="outlined" onClick={updateFieldChanged(index)} value="delete">
+                            {(Number(key.cena).toFixed(2) * key.skaits).toFixed(
+                              2
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="outlined"
+                              onClick={updateFieldChanged(index)}
+                              value="delete"
+                            >
                               Dzēst
                             </Button>
                           </TableCell>
                         </TableRow>
                       );
                     })
-                  : ''}
+                  : ""}
               </TableBody>
             </Table>
           </TableContainer>
           <Container
             disableGutters
             maxWidth={false}
-            sx={{ display: 'flex', justifyContent: 'space-around', p: '1rem 2rem', alignItems: 'center' }}
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              p: "1rem 2rem",
+              alignItems: "center",
+            }}
             component={Paper}
           >
             <Typography>Kopsumma {fullPrice.toFixed(2)}</Typography>
@@ -153,14 +177,14 @@ const Cart = () => {
       ) : (
         <Container
           sx={{
-            backgroundColor: '#c44545',
-            mt: '20vh',
-            height: '50vh',
-            fontSize: '2rem',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '.5rem',
+            backgroundColor: "#c44545",
+            mt: "20vh",
+            height: "50vh",
+            fontSize: "2rem",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: ".5rem",
           }}
         >
           Nav preču grozā

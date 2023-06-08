@@ -38,6 +38,9 @@ function Header() {
     } else {
       setAuthStatus(false);
     }
+    if (isAuthenticated() && auth().userType === "admin") {
+      navigate("/admin/home");
+    }
   }, []);
 
   const handleKeyDown = (event) => {
