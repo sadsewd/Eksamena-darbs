@@ -2,6 +2,7 @@ import {
   Button,
   ButtonGroup,
   Container,
+  FormControl,
   InputLabel,
   MenuItem,
   Paper,
@@ -33,11 +34,14 @@ const Payment = () => {
   const [data1, setData1] = useState();
   const [Price, setPrice] = useState(0);
   const [data, setdata] = useState();
+  const [Couriers, setCouriers] = useState([{ Pakalpojuma_sniedzejs: "" }]);
+  const [selectedCourier, setselectedCourier] = useState();
   const [error, seterror] = useState();
-  const [displayValues, setdisplayValues] = useState(["block", "none"]);
+  const [displayValues, setdisplayValues] = useState(["block", "none", "none"]);
 
   useEffect(() => {
     setPrice(Number(JSON.parse(localStorage.getItem("price")).toFixed(2)));
+    FetchCouriers();
   }, []);
 
   const setDataInfo = () => {
@@ -48,12 +52,23 @@ const Payment = () => {
     setData1(object);
   };
 
+  const FetchCouriers = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/pasutijuma_pakalpojums`
+      );
+      setCouriers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleCancel = () => {
-    localStorage.removeItem("price");
     navigate("/cart");
   };
 
   const handleContinue = () => {
+    let displayval = displayValues;
     if (
       pilnaAdrese.adrese !== "" ||
       pilnaAdrese.pilseta !== "" ||
@@ -61,11 +76,20 @@ const Payment = () => {
       pilnaAdrese.vards !== "" ||
       pilnaAdrese.uzvards !== ""
     ) {
-      console.log("oki");
-      setdisplayValues(["none", "block"]);
+      displayval[0] = "none";
+      displayval[1] = "block";
+      displayval[2] = "none";
+      setdisplayValues(displayval);
     } else {
-      console.log("You don goofed up");
+      seterror("Nav aizpidīti visi ievadlauki!");
+      displayval[2] = "block";
+      setdisplayValues(displayval);
     }
+  };
+
+  const handleSelectChange = (event) => {
+    console.log(event.target.value);
+    setselectedCourier(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -74,74 +98,104 @@ const Payment = () => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-    navigate("/");
+    let displayval = displayValues;
+    if (
+      ApmaksasInfo.kartes_nr !== "" ||
+      ApmaksasInfo.cvc !== "" ||
+      ApmaksasInfo.termins !== ""
+    ) {
+      navigate("/");
+    } else {
+      seterror("Nav aizpidīti visi ievadlauki!");
+      displayval[2] = "block";
+      setdisplayValues(displayval);
+    }
   };
 
   return (
     <>
       <Header />
-
-      <Container
-        maxWidth={false}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          mt: "2rem",
-          display: displayValues[0],
-        }}
-      >
-        <Container container component={Paper} disableGutters>
-          <form
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              padding: "2rem",
-              gap: "1rem",
-            }}
-          >
-            <Typography sx={{ textAlign: "center", fontSize: "1.5rem" }}>
-              Adrese
-            </Typography>
-            <TextField
-              value={pilnaAdrese.adrese}
-              onChange={(event) => {
-                setadrese({ ...pilnaAdrese, adrese: event.target.value });
+      {Couriers ? (
+        <Container
+          maxWidth={false}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mt: "2rem",
+            display: displayValues[0],
+          }}
+        >
+          <Container container component={Paper} disableGutters>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "2rem",
+                gap: "1rem",
               }}
-              label="adrese"
-            />
-            <TextField
-              value={pilnaAdrese.pilseta}
-              onChange={(event) =>
-                setadrese({ ...pilnaAdrese, pilseta: event.target.value })
-              }
-              label="pilseta"
-            />
-            <TextField
-              value={pilnaAdrese.zipkods}
-              onChange={(event) =>
-                setadrese({ ...pilnaAdrese, zipkods: event.target.value })
-              }
-              label="zipkods"
-            />
-            <TextField
-              value={pilnaAdrese.vards}
-              onChange={(event) =>
-                setadrese({ ...pilnaAdrese, vards: event.target.value })
-              }
-              label="vards"
-            />
-            <TextField
-              value={pilnaAdrese.uzvards}
-              onChange={(event) =>
-                setadrese({ ...pilnaAdrese, uzvards: event.target.value })
-              }
-              label="uzvards"
-            />
-            <Button onClick={handleContinue}>Turpināt</Button>
-          </form>
+            >
+              <Typography sx={{ textAlign: "center", fontSize: "1.5rem" }}>
+                Adrese
+              </Typography>
+              <TextField
+                value={pilnaAdrese.adrese}
+                onChange={(event) => {
+                  setadrese({ ...pilnaAdrese, adrese: event.target.value });
+                }}
+                label="adrese"
+              />
+              <TextField
+                value={pilnaAdrese.pilseta}
+                onChange={(event) =>
+                  setadrese({ ...pilnaAdrese, pilseta: event.target.value })
+                }
+                label="pilseta"
+              />
+              <TextField
+                value={pilnaAdrese.zipkods}
+                onChange={(event) =>
+                  setadrese({ ...pilnaAdrese, zipkods: event.target.value })
+                }
+                label="zipkods"
+              />
+              <TextField
+                value={pilnaAdrese.vards}
+                onChange={(event) =>
+                  setadrese({ ...pilnaAdrese, vards: event.target.value })
+                }
+                label="vards"
+              />
+              <TextField
+                value={pilnaAdrese.uzvards}
+                onChange={(event) =>
+                  setadrese({ ...pilnaAdrese, uzvards: event.target.value })
+                }
+                label="uzvards"
+              />
+              <FormControl fullWidth>
+                <InputLabel>Kurjers</InputLabel>
+                <Select
+                  value={selectedCourier}
+                  label="Kurjers"
+                  onChange={handleSelectChange}
+                >
+                  {Couriers.map((key, index) => {
+                    return (
+                      <MenuItem key={index} value={key.Pakalpojuma_sniedzejs}>
+                        {key.Pakalpojuma_sniedzejs}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <Button onClick={handleContinue}>Turpināt</Button>
+            </form>
+          </Container>
         </Container>
-      </Container>
+      ) : (
+        ""
+      )}
 
       <Container
         maxWidth={false}
@@ -153,7 +207,7 @@ const Payment = () => {
           display: displayValues[1],
         }}
       >
-        <Container container component={Paper} disableGutters>
+        <Container component={Paper} disableGutters>
           <form
             style={{
               display: "flex",
@@ -192,6 +246,21 @@ const Payment = () => {
             <Button onClick={handleSubmit}>Veikt apmaksu</Button>
           </form>
         </Container>
+      </Container>
+
+      <Container
+        sx={{
+          display: "flex",
+          textAlign: "center",
+          mt: "2rem",
+          display: displayValues[2],
+        }}
+      >
+        <Typography
+          sx={{ padding: "2rem", background: "red", fontSize: "1.3rem" }}
+        >
+          {error}
+        </Typography>
       </Container>
 
       <Footer />
