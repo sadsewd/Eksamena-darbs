@@ -4,17 +4,31 @@ import Footer from '../Footer/Footer';
 import { Container, Grid, Typography } from '@mui/material';
 import CardComp from '../Card/Card';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const Katalogs = () => {
   const [data, setData] = useState([{}]);
+  const params = useParams();
+  const [kategorija, setkategorija] = useState(false);
 
   useEffect(() => {
-    FetchData();
+    if(Object.keys(params).length === 0){
+      FetchData();
+      setkategorija(false);
+    }else{
+      FetchKategoryItems();
+      setkategorija(true);
+    }
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  const FetchKategoryItems = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5001/kategorijasPreces/${params.id}`);
+      setData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const FetchData = async () => {
     try {
@@ -39,7 +53,7 @@ const Katalogs = () => {
           borderRadius: '.5rem',
         }}
       >
-        <Typography sx={{ fontSize: '2.5rem' }}>Katalogs</Typography>
+        <Typography sx={{ fontSize: '2.5rem' }}>{kategorija ? `Preces zem kategorijas ${data[0].kategorija}` : "Katalogs"}</Typography>
       </Container>
       <Grid container sx={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
         {data

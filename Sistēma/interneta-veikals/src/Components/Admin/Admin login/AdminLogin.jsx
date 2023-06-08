@@ -21,7 +21,7 @@ const LoginPage = () => {
   };
 
   const onSubmit = async () => {
-    if (username !== '' || password !== '') {
+    if (username !== '' && password !== '') {
       try {
         const res = await axios.get(`http://localhost:5001/adminLogin/${username}/${md5(password)}`);
         if ((md5(password) === res.data[0].parole) & (username === res.data[0].lietotajvards)) {

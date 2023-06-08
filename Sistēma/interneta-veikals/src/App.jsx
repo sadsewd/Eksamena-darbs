@@ -13,6 +13,8 @@ import ItemPage from './Components/Client pages/ItemPage';
 import Cart from './Components/Client pages/Cart';
 import Payment from './Components/Client pages/Payment';
 import Katalogs from './Components/Client pages/katalogs';
+import RegisterPage from './Components/Register/RegisterPage';
+import Categories from './Components/Client pages/Categories';
 
 function App() {
   return (
@@ -26,7 +28,10 @@ function App() {
           <Route exact path="/admin" element={<AdminLogin />} />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/payment" element={<Payment />} />
+          <Route exact path="/katalogs/:id" element={<Katalogs />} />
           <Route exact path="/katalogs" element={<Katalogs />} />
+          <Route exact path="/register" element={<RegisterPage />} />
+          <Route exact path="/kategorijas" element={<Categories />} />
           <Route
             exact
             path="/admin/home"

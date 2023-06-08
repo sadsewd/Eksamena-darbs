@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import axios from 'axios';
-import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 
 const AdminHome = () => {
@@ -10,16 +9,11 @@ const AdminHome = () => {
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
   const navigate = useNavigate();
-  const isAuthenticated = useIsAuthenticated();
-  const auth = useAuthUser();
 
   useEffect(() => {
     FetchData();
     FetchData1();
     FetchData2();
-    if (!isAuthenticated || auth().userType !== 'admin') {
-      navigate('/');
-    }
   }, []);
 
   const FetchData = async () => {

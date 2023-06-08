@@ -2,15 +2,17 @@ import React from 'react';
 import * as S from '../Admin/Admin login/AdminLoginStyle';
 import { useState } from 'react';
 import axios from 'axios';
-import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
 import md5 from 'md5';
 
-const LoginPage = () => {
+let passwd
+let infoObj
+let info
+
+const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const signIn = useSignIn();
   const navigate = useNavigate();
 
   const handleUsernameInput = e => {
@@ -20,24 +22,23 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     if (username !== '' && password !== '') {
-      try {
-        const res = await axios.get(`http://localhost:5001/klientLogin/${username}/${md5(password)}`);
-        if ((md5(password) === res.data[0].parole) & (username === res.data[0].lietotajvards)) {
-          signIn({
-            token: res.headers['token'],
-            expiresIn: 60,
-            tokenType: 'Bearer',
-            authState: { username: username, userType: 'client' },
-          });
-          navigate('/');
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      passwd = md5(password)
+      infoObj = {lietotajvards: username, parole: passwd}
+      info = new URLSearchParams(Object.entries(infoObj)).toString();
+      PostUser();
     } else {
       console.log('Nav ievadīta vajadzīgā informācija!');
+    }
+  };
+
+  const PostUser = async () => {
+    try {
+      await axios.post(`http://localhost:5001/lietotaji`, info);
+      navigate('/');
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -55,15 +56,15 @@ const LoginPage = () => {
         }}
         variant="outlined"
       >
-        <S.Text>Ielogošanās</S.Text>
+        <S.Text>Reģistrācija</S.Text>
         <S.Input required type="text" variant="outlined" label="Lietotājvārds" onChange={handleUsernameInput} />
         <S.Input required type="password" variant="outlined" label="Parole" onChange={handlePasswordInput} />
         <S.SButton variant="outlined" onClick={onSubmit}>
-          Ielogoties
+        Reģistrēties
         </S.SButton>
-        <S.SButton variant="outlined" onClick={()=> navigate('/register')}>Reģistrēties</S.SButton>
+        <S.SButton variant="outlined" onClick={() => navigate('login')}>Ielogoties</S.SButton>
       </Paper>
     </Container>
   );
 };
-export default LoginPage;
+export default RegisterPage;

@@ -17,14 +17,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useIsAuthenticated, useSignOut } from 'react-auth-kit';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthUser } from 'react-auth-kit';
 
 function Header() {
   const navigate = useNavigate();
   const isAuthenticated = useIsAuthenticated();
   const auth = useAuthUser();
-
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [cartItems, setCartItems] = useState(0);
@@ -115,12 +114,12 @@ function Header() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center" onClick={() => navigate('/katalogs')}>
+                <Typography textAlign="center" onClick={() => navigate('/katalogs/')}>
                   Katalogs
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Kategorijas</Typography>
+                <Typography textAlign="center" onClick={() => navigate('/kategorijas')}>Kategorijas</Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -143,10 +142,10 @@ function Header() {
             Veikals
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button onClick={() => navigate('/katalogs')} sx={{ my: 2, color: 'white', display: 'block' }}>
+            <Button onClick={() => navigate('/katalogs/')} sx={{ my: 2, color: 'white', display: 'block' }}>
               Katalogs
             </Button>
-            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+            <Button onClick={() => navigate('/kategorijas')} sx={{ my: 2, color: 'white', display: 'block' }}>
               Kategorijas
             </Button>
             <TextField variant="standard" label="Meklēt" sx={{ ml: 1, my: 0.5, color: 'white', display: 'block' }} />
