@@ -17,7 +17,6 @@ const CardComp = (props) => {
   };
 
   const handleAddToCart = (event) => {
-    console.log(props);
     cartItem.id = event.target.value;
     if (props.dNol > cartItem.skaits) {
       cartItem.skaits = cartItem.skaits + 1;

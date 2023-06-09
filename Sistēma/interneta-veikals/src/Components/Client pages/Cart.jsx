@@ -34,7 +34,6 @@ const Cart = () => {
       pilnaCena = Number(pilnaCena.toFixed(2));
       setfullPrice((prevValue) => prevValue + pilnaCena);
     }
-    console.log(object);
     setData(object);
   };
 
