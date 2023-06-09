@@ -122,6 +122,7 @@ const Katalogs = () => {
                     itemId={key.id}
                     price={key.cena}
                     dNol={key.daudzums_noliktava}
+                    active={key.daudzums_noliktava > 0 ? false : true}
                   />
                 </Grid>
               );
@@ -145,6 +146,7 @@ const Katalogs = () => {
                     itemId={key.id}
                     price={key.cena}
                     dNol={key.daudzums_noliktava}
+                    active={key.daudzums_noliktava > 0 ? false : true}
                   />
                 </Grid>
               );
