@@ -152,7 +152,7 @@ const Cart = () => {
                         </TableRow>
                       );
                     })
-                  : ""}
+                  : null}
               </TableBody>
             </Table>
           </TableContainer>
