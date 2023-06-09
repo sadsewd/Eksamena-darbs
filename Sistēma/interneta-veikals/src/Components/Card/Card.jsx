@@ -30,7 +30,11 @@ const CardComp = (props) => {
   };
   return (
     <Card variant="outlined" sx={{ textAlign: "center" }}>
-      <CardActionArea component={RouterLink} to={`/produkts/${props.itemId}`}>
+      <CardActionArea
+        component={RouterLink}
+        disabled={props.active}
+        to={`/produkts/${props.itemId}`}
+      >
         <CardMedia
           sx={{ objectFit: "contain" }}
           component="img"
@@ -42,8 +46,13 @@ const CardComp = (props) => {
         <Typography>Cena - {props.price}€</Typography>
       </CardActionArea>
       <CardActions sx={{ display: "flex", justifyContent: "center" }}>
-        <Button size="small" onClick={handleAddToCart} value={props.itemId}>
-          Ielikt grozā
+        <Button
+          disabled={props.active}
+          size="small"
+          onClick={handleAddToCart}
+          value={props.itemId}
+        >
+          {props.active ? "Izpārdots" : "Ielikt grozā"}
         </Button>
       </CardActions>
     </Card>

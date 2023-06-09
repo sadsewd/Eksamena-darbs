@@ -76,6 +76,7 @@ const HomePage = () => {
                     itemId={key.id}
                     price={key.cena}
                     dNol={key.daudzums_noliktava}
+                    active={key.daudzums_noliktava > 0 ? false : true}
                   />
                 </Grid>
               );
@@ -120,6 +121,8 @@ const HomePage = () => {
                     Category={key.kategorija}
                     itemId={key.id}
                     price={key.cena}
+                    dNol={key.daudzums_noliktava}
+                    active={key.daudzums_noliktava > 0 ? false : true}
                   />
                 </Grid>
               );
