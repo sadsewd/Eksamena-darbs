@@ -12,11 +12,11 @@ const AdminHeader = () => {
   const auth = useAuthUser();
   const navigate = useNavigate();
 
-useEffect(()=>{
-  if (!isAuthenticated || auth().userType !== 'admin') {
-    navigate('/');
-  }
-},[])
+  useEffect(() => {
+    if (!isAuthenticated || auth().userType !== 'admin') {
+      navigate('/');
+    }
+  }, []);
 
   return (
     <S.Header>
@@ -31,7 +31,7 @@ useEffect(()=>{
             Datubāze
           </Link>
         </Button>
-        <Button variant="text" onClick={signOut}>
+        <Button variant="text" onClick={() => signOut()}>
           Izlogoties
         </Button>
       </S.ButtonContainer>

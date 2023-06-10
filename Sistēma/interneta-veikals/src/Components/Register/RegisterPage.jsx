@@ -6,14 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
 import md5 from 'md5';
 
-let passwd;
 let infoObj;
-let info;
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [msg, setmsg] = useState();
 
   const handleUsernameInput = e => {
     setUsername(e.target.value);
@@ -23,22 +22,24 @@ const RegisterPage = () => {
   };
 
   const onSubmit = () => {
-    if (username !== '' && password !== '') {
-      passwd = md5(password);
-      infoObj = { lietotajvards: username, parole: passwd };
-      info = new URLSearchParams(Object.entries(infoObj)).toString();
+    if (username !== '' && username.includes('@') && username.includes('.') && password !== '') {
+      infoObj = { epasts: username, parole: md5(password) };
+      infoObj = new URLSearchParams(Object.entries(infoObj)).toString();
       PostUser();
     } else {
-      console.log('Nav ievadīta vajadzīgā informācija!');
+      setmsg('Ievadītie dati ir nederīgi');
     }
   };
 
   const PostUser = async () => {
-    try {
-      await axios.post(`http://localhost:5001/lietotaji`, info);
-      navigate('/');
-    } catch (err) {
-      console.log(err);
+    let res = await axios.post(`http://localhost:5001/clientReg`, infoObj);
+    if (res.data === 'Konts veiksmīgi izveidots!') {
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+      setmsg(res.data);
+    } else {
+      setmsg(res.data);
     }
   };
 
@@ -57,7 +58,7 @@ const RegisterPage = () => {
         variant="outlined"
       >
         <S.Text>Reģistrācija</S.Text>
-        <S.Input required type="text" variant="outlined" label="Lietotājvārds" onChange={handleUsernameInput} />
+        <S.Input required type="text" variant="outlined" label="E-pasts" onChange={handleUsernameInput} />
         <S.Input required type="password" variant="outlined" label="Parole" onChange={handlePasswordInput} />
         <S.SButton variant="outlined" onClick={onSubmit}>
           Reģistrēties
@@ -65,6 +66,15 @@ const RegisterPage = () => {
         <S.SButton variant="outlined" onClick={() => navigate('/login')}>
           Ielogoties
         </S.SButton>
+        {msg === 'Konts veiksmīgi izveidots!' && (
+          <Container sx={{ textAlign: 'center', background: 'green', p: '1rem' }}>{msg}</Container>
+        )}
+        {msg === 'Konts ar šo epastu pastāv!' && (
+          <Container sx={{ textAlign: 'center', background: 'red', p: '1rem' }}>{msg}</Container>
+        )}
+        {msg === 'Ievadītie dati ir nederīgi' && (
+          <Container sx={{ textAlign: 'center', background: 'red', p: '1rem' }}>{msg}</Container>
+        )}
       </Paper>
     </Container>
   );

@@ -10,6 +10,7 @@ import md5 from 'md5';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, setmsg] = useState();
   const signIn = useSignIn();
   const navigate = useNavigate();
 
@@ -23,21 +24,25 @@ const LoginPage = () => {
   const onSubmit = async () => {
     if (username !== '' && password !== '') {
       try {
-        const res = await axios.get(`http://localhost:5001/adminLogin/${username}/${md5(password)}`);
-        if ((md5(password) === res.data[0].parole) & (username === res.data[0].lietotajvards)) {
+        let authInfo = { lietotajvards: username, parole: md5(password) };
+        authInfo = new URLSearchParams(Object.entries(authInfo)).toString();
+        const res = await axios.post(`http://localhost:5001/authAdmin`, authInfo);
+        if (res.data.token !== undefined) {
           signIn({
-            token: res.headers['token'],
+            token: res.data.token,
             expiresIn: 60,
             tokenType: 'Bearer',
             authState: { username: username, userType: 'admin' },
           });
           navigate('/admin/home');
+        } else {
+          setmsg('Nepareizs epasts un/vai parole!');
         }
       } catch (err) {
         console.log(err);
       }
     } else {
-      console.log('Nav ievadīta vajadzīgā informācija!');
+      setmsg('Nav ievadīta vajadzīgā informācija!');
     }
   };
 
@@ -61,6 +66,7 @@ const LoginPage = () => {
         <S.SButton variant="outlined" onClick={onSubmit}>
           Ielogoties
         </S.SButton>
+        {msg && <Container sx={{ textAlign: 'center', background: 'red', p: '1rem' }}>{msg}</Container>}
       </Paper>
     </Container>
   );
