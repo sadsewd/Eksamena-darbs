@@ -290,9 +290,14 @@ app.get('/administracija/:id', (req, res) => {
 
 app.post('/administracija', (req, res) => {
   const query =
-    'INSERT INTO administracija(`lietotajvards`, `parole`) VALUES (?)';
+    'INSERT INTO administracija(`lietotajvards`, `parole`, `vards`, `uzvards`) VALUES (?)';
 
-  const values = [req.body.lietotajvards, req.body.parole];
+  const values = [
+    req.body.lietotajvards,
+    req.body.parole,
+    req.body.vards,
+    req.body.uzvards,
+  ];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
@@ -312,9 +317,14 @@ app.delete('/administracija/:id', (req, res) => {
 app.put('/administracija/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'UPDATE administracija SET `lietotajvards`= ?, `parole`= ? WHERE id = ?';
+    'UPDATE administracija SET `lietotajvards`= ?, `parole`= ?, `vards`= ?, `uzvards`= ? WHERE id = ?';
 
-  const values = [req.body.lietotajvards, req.body.parole];
+  const values = [
+    req.body.lietotajvards,
+    req.body.parole,
+    req.body.vards,
+    req.body.uzvards,
+  ];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
@@ -572,7 +582,7 @@ app.get('/lietotaji', (req, res) => {
 app.get('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
   const query = 'SELECT * FROM lietotaji WHERE id = ?';
-  db.query(query, (err, data) => {
+  db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });

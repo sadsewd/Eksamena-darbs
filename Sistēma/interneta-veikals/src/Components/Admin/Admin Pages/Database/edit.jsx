@@ -4,9 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 
-let tempObj = {};
-let tempValue;
-let tempId;
 let isreadonly = false;
 let updateData;
 
@@ -19,23 +16,6 @@ const Edit = () => {
   const [keys, setkeys] = useState([]);
 
   useEffect(() => {
-    if (data) {
-      setkeys(Object.keys(data));
-      tempObj = data;
-    }
-  }, [data]);
-
-  useEffect(() => {
-    keys.forEach(element => {
-      if (element === 'id') {
-        tempObj[element] = id;
-      } else {
-        tempObj[element] = '';
-      }
-    });
-  }, [keys]);
-
-  useEffect(() => {
     FetchData();
   }, []);
 
@@ -43,6 +23,7 @@ const Edit = () => {
     try {
       const res = await axios.get(`http://localhost:5001/${table}/${id}`);
       setData(res.data[0]);
+      setkeys(Object.keys(res.data[0]));
     } catch (err) {
       console.log(err);
     }
@@ -59,20 +40,17 @@ const Edit = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    delete tempObj.id;
-    const isEmpty = Object.values(tempObj).every(x => x === '');
-    if(isEmpty){
+    const isEmpty = Object.values(data).every(x => x === '');
+    if (isEmpty) {
       handleCancel();
-    }else{
-      updateData = new URLSearchParams(Object.entries(tempObj)).toString();
+    } else {
+      updateData = new URLSearchParams(Object.entries(data)).toString();
       UpdataData();
     }
   };
 
-  const handleInput = event => {
-    tempValue = event.target.value;
-    tempId = event.target.name;
-    tempObj[tempId] = tempValue;
+  const handleInput = (event, key) => {
+    setData({ ...data, [key]: event.target.value });
   };
 
   const handleCancel = () => {
@@ -103,27 +81,41 @@ const Edit = () => {
             } else {
               isreadonly = false;
             }
+
             return (
               <div key={index}>
                 <Typography>{key}</Typography>
                 <br />
-                <TextField
-                  sx={{ width: '100%' }}
-                  name={key}
-                  placeholder={data[key].toString()}
-                  onChange={handleInput}
-                  InputProps={{
-                    readOnly: isreadonly,
-                  }}
-                  variant="outlined"
-                />
+                {key === 'parole' ? (
+                  <TextField
+                    sx={{ width: '100%' }}
+                    name={key}
+                    placeholder="Paslēpts"
+                    onChange={event => handleInput(event, key)}
+                    InputProps={{
+                      readOnly: isreadonly,
+                    }}
+                    variant="outlined"
+                  />
+                ) : (
+                  <TextField
+                    sx={{ width: '100%' }}
+                    name={key}
+                    value={data[key].toString()}
+                    onChange={event => handleInput(event, key)}
+                    InputProps={{
+                      readOnly: isreadonly,
+                    }}
+                    variant="outlined"
+                  />
+                )}
               </div>
             );
           })}
-          <Button variant="outlined"  sx={{p: '1rem'}} onClick={handleSubmit}>
+          <Button variant="outlined" sx={{ p: '1rem' }} onClick={handleSubmit}>
             Iesniegt
           </Button>
-          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleCancel}>
+          <Button variant="outlined" sx={{ p: '1rem' }} onClick={handleCancel}>
             Atcelt
           </Button>
         </Paper>
