@@ -27,7 +27,7 @@ app.listen(5001, () => {
 app.get('/klientaInfo/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'SELECT adrese,pilseta,zip_kods,vards,uzvards FROM informacija WHERE Lietotaji_id = ?';
+    'SELECT Lietotaji_id,adrese,pilseta,zip_kods,vards,uzvards FROM informacija WHERE Lietotaji_id = ?';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
@@ -68,8 +68,33 @@ app.put('/produktaInfoMaina/:id', (req, res) => {
 });
 
 app.get('/apmaksasInfo/', (req, res) => {
-  const query = `select max(a.id)+1 as infoID, max(b.id) as pasID, max(c.id)+1 as statID from informacija a inner join pasutijumi b on a.id = b.informacija_id inner join pasutijuma_status c on b.Pasutijuma_status_id = c.id;`;
+  const query = `select max(id)+1 as infoID from informacija;`;
   db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get('/apmaksasInfo1/', (req, res) => {
+  const query = `select max(id) as pasID from pasutijumi;`;
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get('/apmaksasInfo2/', (req, res) => {
+  const query = `select max(id)+1 as statID from pasutijuma_status;`;
+  db.query(query, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.get('/getId/:id', (req, res) => {
+  const id = req.params.id;
+  const query = `select id from informacija where Lietotaji_id = ?`;
+  db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
   });
@@ -436,7 +461,7 @@ app.get('/informacija/:id', (req, res) => {
 
 app.post('/informacija', (req, res) => {
   const query =
-    'INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`, Lietotaji_id,`epasts`,`talr_nr`) VALUES (?)';
+    'INSERT INTO informacija(`adrese`, `pilseta`, `zip_kods`, `vards`, `uzvards`, Lietotaji_id) VALUES (?)';
 
   const values = [
     req.body.adrese,
@@ -445,8 +470,6 @@ app.post('/informacija', (req, res) => {
     req.body.vards,
     req.body.uzvards,
     req.body.Lietotaji_id,
-    req.body.epasts,
-    req.body.talr_nr,
   ];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
@@ -467,7 +490,7 @@ app.delete('/informacija/:id', (req, res) => {
 app.put('/informacija/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?, `Lietotaji_id` = ?, `epasts` = ?, `talr_nr` = ? WHERE id = ?';
+    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?, `Lietotaji_id` = ? WHERE id = ?';
 
   const values = [
     req.body.adrese,
@@ -476,8 +499,6 @@ app.put('/informacija/:id', (req, res) => {
     req.body.vards,
     req.body.uzvards,
     req.body.Lietotaji_id,
-    req.body.epasts,
-    req.body.talr_nr,
   ];
 
   db.query(query, [...values, id], (err, data) => {
@@ -558,9 +579,9 @@ app.get('/lietotaji/:id', (req, res) => {
 });
 
 app.post('/lietotaji', (req, res) => {
-  const query = 'INSERT INTO lietotaji(`lietotajvards`,`parole`) VALUES (?)';
+  const query = 'INSERT INTO lietotaji(`epasts`,`parole`) VALUES (?)';
 
-  const values = [req.body.lietotajvards, req.body.parole];
+  const values = [req.body.epasts, req.body.parole];
   db.query(query, [values], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
@@ -579,10 +600,9 @@ app.delete('/lietotaji/:id', (req, res) => {
 
 app.put('/lietotaji/:id', (req, res) => {
   const id = req.params.id;
-  const query =
-    'UPDATE lietotaji SET `lietotajvards`= ?, `parole`= ? WHERE id = ?';
+  const query = 'UPDATE lietotaji SET `epasts`= ?, `parole`= ? WHERE id = ?';
 
-  const values = [req.body.lietotajvards, req.body.parole];
+  const values = [req.body.epasts, req.body.parole];
 
   db.query(query, [...values, id], (err, data) => {
     if (err) return res.send(err);
