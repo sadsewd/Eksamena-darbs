@@ -136,11 +136,9 @@ const Database = () => {
         <InputLabel sx={{ color: 'white' }}>Tabula</InputLabel>
         <Select value={table} label="Tabula" onChange={handleChange} sx={{}}>
           <MenuItem value={'administracija'}>Administracija</MenuItem>
-          <MenuItem value={'groza_produkts'}>Groza produkts</MenuItem>
-          <MenuItem value={'grozs'}>Grozs</MenuItem>
           <MenuItem value={'informacija'}>Infromacija</MenuItem>
           <MenuItem value={'kategorijas'}>Kategorijas</MenuItem>
-          <MenuItem value={'lietotaja_informacija'}>Lietotaja informacija</MenuItem>
+          <MenuItem value={'informacija'}>Lietotaja informacija</MenuItem>
           <MenuItem value={'lietotaji'}>Lietotaji</MenuItem>
           <MenuItem value={'pasutijuma_pakalpojums'}>Pasutijuma pakalpojums</MenuItem>
           <MenuItem value={'pasutijuma_status'}>Pasutijuma status</MenuItem>
