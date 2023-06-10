@@ -54,15 +54,20 @@ const Payment = () => {
   const [userhasdata, setusehasdata] = useState();
   useEffect(() => {
     FetchCouriers();
-    FetchData();
     setDataInfo();
-    if (isAuthenticated()) {
+    if (auth()) {
       if (auth().userType === 'client') {
         setloggedIn(true);
         fetchUserData();
       }
+    } else {
+      FetchData();
     }
   }, []);
+
+  useEffect(() => {
+    FetchData();
+  }, [userhasdata]);
 
   const fetchUserData = async () => {
     try {
@@ -70,8 +75,7 @@ const Payment = () => {
       if (res.data[0] !== undefined) {
         setadrese(res.data[0]);
         setusehasdata(true);
-        console.log(res.data[0].id);
-        setid(res.data[0].id);
+        setid(res.data[0].Lietotaji_id);
         setcompareData(res.data[0]);
       } else {
         setusehasdata(false);
@@ -136,8 +140,9 @@ const Payment = () => {
       pilnaAdrese.vards !== '' &&
       pilnaAdrese.uzvards !== ''
     ) {
-      pilnaAdrese.zip_kods = `LV-${pilnaAdrese.zip_kods}`;
-      pilnaAdrese.kurjers = selectedCourier;
+      if (!pilnaAdrese.zip_kods.includes('LV-')) {
+        pilnaAdrese.zip_kods = `LV-${pilnaAdrese.zip_kods}`;
+      }
       if (isAuthenticated()) {
         if ((auth().userType = 'client')) {
           pilnaAdrese.Lietotaji_id = auth().userid;
@@ -165,7 +170,7 @@ const Payment = () => {
       !ApmaksasInfo.cvc.includes('_') &&
       !ApmaksasInfo.termins.includes('_')
     ) {
-      if (auth() && userhasdata) {
+      if (auth() && userhasdata === true) {
         SetClientData();
       } else {
         CreateData();
@@ -178,8 +183,12 @@ const Payment = () => {
   };
 
   const SetClientData = async () => {
+    let temp = pilnaAdrese;
+    delete temp.Lietotaji_id;
+
+    temp = new URLSearchParams(Object.entries(temp)).toString();
     try {
-      await axios.put(`http://localhost:5001/klientaInfo/${auth().userid}`, pilnaAdrese);
+      await axios.put(`http://localhost:5001/klientaInfo/${auth().userid}`, temp);
       CreateDataUser();
     } catch (err) {
       console.log(err);
@@ -202,7 +211,7 @@ const Payment = () => {
           informacija_id: id,
           Lietotaji_id: auth().userid,
         });
-      } else if (!userhasdata) {
+      } else if (auth() && userhasdata === false) {
         setPasutijumaInfo({
           kopsumma: Number(JSON.parse(localStorage.getItem('price')).toFixed(2)),
           pasutijuma_datums: `${day}.${month}.${year}`,
@@ -252,7 +261,6 @@ const Payment = () => {
   const createData0 = async () => {
     let createData3 = new URLSearchParams(Object.entries(PasutijumaInfo)).toString();
     try {
-      console.log(PasutijumaInfo);
       await axios.post(`http://localhost:5001/pasutijumi`, createData3);
       createDatairoot();
     } catch (err) {

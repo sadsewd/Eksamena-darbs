@@ -24,6 +24,17 @@ app.listen(5001, () => {
 });
 
 /*Klienta info*/
+
+app.get('/klientaPirkumuInfo/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'SELECT * FROM pasutijumi inner join Produkti_has_Pasutijumi on pasutijumi.id = Produkti_has_Pasutijumi.Pasutijumi_id inner join Produkti on Produkti_has_Pasutijumi.Produkti_id = Produkti.id WHERE Lietotaji_id = ? ';
+  db.query(query, [id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
 app.get('/klientaInfo/:id', (req, res) => {
   const id = req.params.id;
   const query =

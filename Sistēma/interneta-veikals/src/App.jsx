@@ -17,6 +17,7 @@ import RegisterPage from './Components/Register/RegisterPage';
 import Categories from './Components/Client pages/Categories';
 import Profile from './Components/Client pages/logedIn pages/profile';
 import ChangeData from './Components/Client pages/logedIn pages/changeData';
+import History from './Components/Client pages/logedIn pages/history';
 
 function App() {
   return (
@@ -86,6 +87,15 @@ function App() {
             element={
               <RequireAuth loginPath="/login">
                 <ChangeData />
+              </RequireAuth>
+            }
+          />
+          <Route
+            exact
+            path="/vesture"
+            element={
+              <RequireAuth loginPath="/login">
+                <History />
               </RequireAuth>
             }
           />
