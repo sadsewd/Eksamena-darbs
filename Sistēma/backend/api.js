@@ -23,6 +23,38 @@ app.listen(5001, () => {
   console.log('Connected to backend.');
 });
 
+/*Klienta info*/
+app.get('/klientaInfo/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'SELECT adrese,pilseta,zip_kods,vards,uzvards FROM informacija WHERE Lietotaji_id = ?';
+  db.query(query, [id], (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
+});
+
+app.put('/klientaInfo/:id', (req, res) => {
+  const id = req.params.id;
+  const query =
+    'UPDATE informacija SET `adrese`= ?, `pilseta` = ?, `zip_kods` = ?, `vards` = ?, `uzvards` = ?  WHERE Lietotaji_id = ?';
+
+  const values = [
+    req.body.adrese,
+    req.body.pilseta,
+    req.body.zip_kods,
+    req.body.vards,
+    req.body.uzvards,
+  ];
+
+  db.query(query, [...values, id], (err, data) => {
+    if (err) return res.send(err);
+    return res.json(data);
+  });
+});
+
+/*Klienta info Beigas*/
+
 /*Apmaksa*/
 app.put('/produktaInfoMaina/:id', (req, res) => {
   const id = req.params.id;

@@ -184,8 +184,8 @@ function Header() {
             </Tooltip>
             {authStatus ? (
               <>
-                <Tooltip title="Atvērt lietotāja opcijas">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Tooltip title="Profils">
+                  <IconButton onClick={() => navigate('/profils')} sx={{ p: 0 }}>
                     <PersonIcon />
                   </IconButton>
                 </Tooltip>
@@ -200,30 +200,6 @@ function Header() {
                 </IconButton>
               </Tooltip>
             )}
-
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Profils</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">Iestatijumi</Typography>
-              </MenuItem>
-            </Menu>
           </Box>
         </Toolbar>
       </Container>
