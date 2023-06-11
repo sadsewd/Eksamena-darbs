@@ -61,10 +61,6 @@ const Profile = () => {
             <Button sx={{ width: '100%', p: '1rem' }} onClick={() => navigate('/vesture')} variant="outlined">
               Pirkumu Vēsture
             </Button>
-
-            <Button sx={{ width: '100%', color: 'red', p: '1rem' }} variant="outlined">
-              Dzēst kontu
-            </Button>
           </Container>
         )}
       </Container>

@@ -18,13 +18,13 @@ const History = () => {
     try {
       const res = await axios.get(`${URL}/klientaPirkumuInfo/${auth().userid}`);
       setData(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
   const textSX = { fontSize: '1.3rem', p: '2rem 0' };
-
   return (
     <>
       <Header />
