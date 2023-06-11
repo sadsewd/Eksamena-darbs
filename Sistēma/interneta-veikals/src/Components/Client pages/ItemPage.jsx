@@ -199,6 +199,7 @@ const ItemPage = () => {
                     sx={{ input: { textAlign: 'center' } }}
                     value={count}
                     onChange={handleCount}
+                    disabled
                   />
                   <Button onClick={handleMinus}>-</Button>
                 </ButtonGroup>

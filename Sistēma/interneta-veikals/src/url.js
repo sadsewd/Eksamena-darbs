@@ -1,3 +1,3 @@
-let URL = 'https://veikals.up.railway.app';
+let URL = 'http://localhost:5001';
 
 export default URL;
