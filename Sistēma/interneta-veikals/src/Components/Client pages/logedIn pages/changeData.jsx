@@ -19,7 +19,7 @@ const ChangeData = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`${URL}/${auth().userid}`);
+      const res = await axios.get(`${URL}/klientaInfo/${auth().userid}`);
       setData(res.data[0]);
     } catch (err) {
       console.log(err);
