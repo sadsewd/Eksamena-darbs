@@ -13,13 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'admin',
-  password: 'vHCMkV0@wb5c',
-  database: 'datubaze',
+  user: process.env.MYSQLUSER || 'admin',
+  host: process.env.MYSQLHOST || 'localhost',
+  password: process.env.MYSQLPASSWORD || 'vHCMkV0@wb5c',
+  database: process.env.MYSQLDATABASE || 'datubaze',
+  port: process.env.MYSQLPORT || '3306',
 });
 
-app.listen(5001, () => {
+app.listen(process.env.PORT || 5001, () => {
   console.log('Connected to backend.');
 });
 
