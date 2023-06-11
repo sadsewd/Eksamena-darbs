@@ -123,7 +123,7 @@ app.get('/precuInfo/', (req, res) => {
   });
 });
 app.get('/klientuInfo/', (req, res) => {
-  const query = 'select count(id) as skaits from Lietotaji;';
+  const query = 'select count(id) as skaits from lietotaji;';
   db.query(query, (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
