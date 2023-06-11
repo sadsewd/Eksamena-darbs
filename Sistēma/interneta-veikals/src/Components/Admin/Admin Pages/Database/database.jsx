@@ -10,6 +10,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import URL from '../../../../url';
 
 const Database = () => {
   const [table, setTable] = useState('');
@@ -40,7 +41,7 @@ const Database = () => {
   const FetchData = async () => {
     try {
       if (table !== '') {
-        const res = await axios.get(`http://localhost:5001/${table}`);
+        const res = await axios.get(`${URL}/${table}`);
         setData(res.data);
       }
     } catch (err) {
@@ -50,7 +51,7 @@ const Database = () => {
 
   const DeleteData = async id => {
     try {
-      await axios.delete(`http://localhost:5001/${table}/${id}`);
+      await axios.delete(`${URL}/${table}/${id}`);
       FetchData();
     } catch (err) {
       console.log(err);

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
+import URL from '../../../../url';
 
 let isreadonly = false;
 let updateData;
@@ -21,7 +22,7 @@ const Edit = () => {
 
   const FetchData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/${table}/${id}`);
+      const res = await axios.get(`${URL}/${table}/${id}`);
       setData(res.data[0]);
       setkeys(Object.keys(res.data[0]));
     } catch (err) {
@@ -31,7 +32,7 @@ const Edit = () => {
 
   const UpdataData = async () => {
     try {
-      await axios.put(`http://localhost:5001/${table}/${id}`, updateData);
+      await axios.put(`${URL}/${table}/${id}`, updateData);
       navigate('/admin/database');
     } catch (err) {
       console.log(err);

@@ -26,7 +26,7 @@ const LoginPage = () => {
       let authInfo = { epasts: email, parole: md5(password) };
       authInfo = new URLSearchParams(Object.entries(authInfo)).toString();
       try {
-        const res = await axios.post(`http://localhost:5001/authClient`, authInfo);
+        const res = await axios.post(`${URL}/authClient`, authInfo);
         if (res.data.token !== undefined) {
           signIn({
             token: res.data.token,

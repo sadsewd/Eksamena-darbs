@@ -6,6 +6,7 @@ import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
 import md5 from 'md5';
+import URL from '../../../url';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -26,7 +27,7 @@ const LoginPage = () => {
       try {
         let authInfo = { lietotajvards: username, parole: md5(password) };
         authInfo = new URLSearchParams(Object.entries(authInfo)).toString();
-        const res = await axios.post(`http://localhost:5001/authAdmin`, authInfo);
+        const res = await axios.post(`${URL}/authAdmin`, authInfo);
         if (res.data.token !== undefined) {
           signIn({
             token: res.data.token,

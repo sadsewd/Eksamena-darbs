@@ -5,6 +5,7 @@ import Footer from '../../Footer/Footer';
 import { Button, ButtonGroup, Container, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import URL from '../../../url';
 
 const Profile = () => {
   const auth = useAuthUser();
@@ -17,7 +18,7 @@ const Profile = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/klientaInfo/${auth().userid}`);
+      const res = await axios.get(`${URL}/klientaInfo/${auth().userid}`);
       setData(res.data[0]);
     } catch (err) {
       console.log(err);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Container, Grid, Paper, Typography } from '@mui/material';
 import axios from 'axios';
+import URL from '../../../../url';
 
 const AdminHome = () => {
   const [data, setData] = useState([]);
@@ -16,7 +17,7 @@ const AdminHome = () => {
 
   const FetchData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/precuInfo`);
+      const res = await axios.get(`${URL}/precuInfo`);
       setData(res.data[0]);
     } catch (err) {
       console.log(err);
@@ -24,7 +25,7 @@ const AdminHome = () => {
   };
   const FetchData1 = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/klientuInfo`);
+      const res = await axios.get(`${URL}/klientuInfo`);
       setData1(res.data[0]);
     } catch (err) {
       console.log(err);
@@ -32,7 +33,7 @@ const AdminHome = () => {
   };
   const FetchData2 = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/pasutijumuInfo`);
+      const res = await axios.get(`${URL}/pasutijumuInfo`);
       setData2(res.data[0]);
     } catch (err) {
       console.log(err);

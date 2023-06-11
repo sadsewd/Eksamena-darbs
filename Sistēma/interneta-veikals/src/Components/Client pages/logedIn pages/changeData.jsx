@@ -5,6 +5,7 @@ import { useAuthUser } from 'react-auth-kit';
 import Header from '../../Header/Header';
 import Footer from '../../Footer/Footer';
 import { useNavigate } from 'react-router-dom';
+import URL from '../../../url';
 
 const ChangeData = () => {
   const auth = useAuthUser();
@@ -18,7 +19,7 @@ const ChangeData = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/klientaInfo/${auth().userid}`);
+      const res = await axios.get(`${URL}/${auth().userid}`);
       setData(res.data[0]);
     } catch (err) {
       console.log(err);
@@ -71,7 +72,7 @@ const ChangeData = () => {
       Data.zip_kods.includes('LV-')
     ) {
       try {
-        await axios.put(`http://localhost:5001/klientaInfo/${auth().userid}`, temp);
+        await axios.put(`${URL}/klientaInfo/${auth().userid}`, temp);
         navigate('/profils');
       } catch (err) {
         console.log(err);

@@ -4,6 +4,7 @@ import axios from 'axios';
 import AdminHeader from '../../Admin Header/AdminHeader';
 import { Button, Container, Paper, TextField, Typography } from '@mui/material';
 import md5 from 'md5';
+import URL from '../../../../url';
 
 let tempObj = {};
 let tempValue;
@@ -30,7 +31,7 @@ const Create = () => {
 
   const FetchData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/${table}`);
+      const res = await axios.get(`${URL}/${table}`);
       setData(res.data[0]);
     } catch (err) {
       console.log(err);
@@ -55,7 +56,7 @@ const Create = () => {
 
   const CreateData = async () => {
     try {
-      await axios.post(`http://localhost:5001/${table}`, createData);
+      await axios.post(`${URL}/${table}`, createData);
       navigate('/admin/database');
     } catch (err) {
       console.log(err);
@@ -104,7 +105,7 @@ const Create = () => {
               </div>
             );
           })}
-          <Button variant="outlined" sx={{p: '1rem'}} onClick={handleSubmit}>
+          <Button variant="outlined" sx={{ p: '1rem' }} onClick={handleSubmit}>
             Iesniegt
           </Button>
           <Button variant="outlined" onClick={handleCancel}>

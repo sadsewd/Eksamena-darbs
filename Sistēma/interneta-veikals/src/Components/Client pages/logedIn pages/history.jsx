@@ -4,6 +4,7 @@ import Header from '../../Header/Header';
 import axios from 'axios';
 import { useAuthUser } from 'react-auth-kit';
 import { Container, Paper, Typography } from '@mui/material';
+import URL from '../../../url';
 
 const History = () => {
   const auth = useAuthUser();
@@ -15,7 +16,7 @@ const History = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/klientaPirkumuInfo/${auth().userid}`);
+      const res = await axios.get(`${URL}/klientaPirkumuInfo/${auth().userid}`);
       setData(res.data);
     } catch (err) {
       console.log(err);

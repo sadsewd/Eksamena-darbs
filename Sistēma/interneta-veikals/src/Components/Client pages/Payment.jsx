@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import InputMask from 'react-input-mask';
 import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
+import URL from '../../url';
 
 const Payment = () => {
   const date = new Date();
@@ -71,7 +72,7 @@ const Payment = () => {
 
   const fetchUserData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/klientaInfo/${auth().userid}`);
+      const res = await axios.get(`${URL}/klientaInfo/${auth().userid}`);
       if (res.data[0] !== undefined) {
         setadrese(res.data[0]);
         setusehasdata(true);
@@ -123,7 +124,7 @@ const Payment = () => {
 
   const FetchCouriers = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/pasutijuma_pakalpojums`);
+      const res = await axios.get(`${URL}/pasutijuma_pakalpojums`);
       setCouriers(res.data);
     } catch (err) {
       console.log(err);
@@ -188,7 +189,7 @@ const Payment = () => {
 
     temp = new URLSearchParams(Object.entries(temp)).toString();
     try {
-      await axios.put(`http://localhost:5001/klientaInfo/${auth().userid}`, temp);
+      await axios.put(`${URL}/klientaInfo/${auth().userid}`, temp);
       CreateDataUser();
     } catch (err) {
       console.log(err);
@@ -197,9 +198,9 @@ const Payment = () => {
 
   const FetchData = async () => {
     try {
-      const res = await axios.get(`http://localhost:5001/apmaksasInfo`);
-      const res1 = await axios.get(`http://localhost:5001/apmaksasInfo1`);
-      const res2 = await axios.get(`http://localhost:5001/apmaksasInfo2`);
+      const res = await axios.get(`${URL}/apmaksasInfo`);
+      const res1 = await axios.get(`${URL}/apmaksasInfo1`);
+      const res2 = await axios.get(`${URL}/apmaksasInfo2`);
       setData(res.data[0]);
       setpasID(res1.data[0].pasID);
       if (auth() && id) {
@@ -238,7 +239,7 @@ const Payment = () => {
     let tempObj = { status: 'Tiek sagatavots piegādei' };
     let createData2 = new URLSearchParams(Object.entries(tempObj)).toString();
     try {
-      await axios.post(`http://localhost:5001/pasutijuma_status`, createData2);
+      await axios.post(`${URL}/pasutijuma_status`, createData2);
       createData0();
     } catch (err) {
       console.log(err);
@@ -250,8 +251,8 @@ const Payment = () => {
     let createData1 = new URLSearchParams(Object.entries(pilnaAdrese)).toString();
     let createData2 = new URLSearchParams(Object.entries(tempObj)).toString();
     try {
-      await axios.post(`http://localhost:5001/informacija`, createData1);
-      await axios.post(`http://localhost:5001/pasutijuma_status`, createData2);
+      await axios.post(`${URL}/informacija`, createData1);
+      await axios.post(`${URL}/pasutijuma_status`, createData2);
       createData0();
     } catch (err) {
       console.log(err);
@@ -261,7 +262,7 @@ const Payment = () => {
   const createData0 = async () => {
     let createData3 = new URLSearchParams(Object.entries(PasutijumaInfo)).toString();
     try {
-      await axios.post(`http://localhost:5001/pasutijumi`, createData3);
+      await axios.post(`${URL}/pasutijumi`, createData3);
       createDatairoot();
     } catch (err) {
       console.log(err);
@@ -277,9 +278,9 @@ const Payment = () => {
         createData = new URLSearchParams(Object.entries(element)).toString();
         let count = Number(pasHasProdMax[i]) - Number(element.daudzums);
         changeData1 = { daudzums_noliktava: count };
-        await axios.post(`http://localhost:5001/produkti_has_pasutijumi`, createData);
+        await axios.post(`${URL}/produkti_has_pasutijumi`, createData);
         changeData2 = new URLSearchParams(Object.entries(changeData1)).toString();
-        await axios.put(`http://localhost:5001/produktaInfoMaina/${pasHasProd[i].Produkti_id}`, changeData2);
+        await axios.put(`${URL}/produktaInfoMaina/${pasHasProd[i].Produkti_id}`, changeData2);
         i++;
       }
       localStorage.clear();

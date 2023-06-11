@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container, Paper } from '@mui/material';
 import md5 from 'md5';
+import URL from '../../url';
 
 let infoObj;
 
@@ -32,7 +33,7 @@ const RegisterPage = () => {
   };
 
   const PostUser = async () => {
-    let res = await axios.post(`http://localhost:5001/clientReg`, infoObj);
+    let res = await axios.post(`${URL}/clientReg`, infoObj);
     if (res.data === 'Konts veiksmīgi izveidots!') {
       setTimeout(() => {
         navigate('/login');
