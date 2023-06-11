@@ -29,7 +29,7 @@ app.listen(process.env.PORT || 5001, () => {
 app.get('/klientaPirkumuInfo/:id', (req, res) => {
   const id = req.params.id;
   const query =
-    'SELECT a.kopsumma, a.id, a.pasutijuma_datums, c.nosaukums, b.daudzums  FROM pasutijumi a inner join produkti_has_pasutijumi b on a.id = b.Pasutijumi_id inner join Produkti c on b.Produkti_id = c.id WHERE Lietotaji_id = ? ';
+    'SELECT a.kopsumma, a.id, a.pasutijuma_datums, c.nosaukums, b.daudzums  FROM pasutijumi a inner join produkti_has_Pasutijumi b on a.id = b.Pasutijumi_id inner join Produkti c on b.Produkti_id = c.id WHERE Lietotaji_id = ? ';
   db.query(query, [id], (err, data) => {
     if (err) return res.json(err);
     return res.json(data);
