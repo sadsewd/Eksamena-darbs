@@ -1,5 +1,5 @@
 import express from 'express';
-import mysql from 'mysql2';
+import mysql2 from 'mysql2';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const db = mysql.createConnection({
+const db = mysql2.createConnection({
   user: process.env.MYSQLUSER || 'admin',
   host: process.env.MYSQLHOST || 'localhost',
   password: process.env.MYSQLPASSWORD || 'vHCMkV0@wb5c',
