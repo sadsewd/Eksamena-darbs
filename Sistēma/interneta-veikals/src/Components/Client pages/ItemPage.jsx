@@ -84,6 +84,7 @@ const ItemPage = () => {
   }, []);
   //checks screen size on initial render and fetches data
 
+  //Funkcija ar kuru tiek pārbaudīts ekrāna lielums, un iestatīti komponenšu a lielumu un citu īpašību vērtības
   const handleResize = () => {
     if (window.innerWidth < '1024') {
       setDirection('column');

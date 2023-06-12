@@ -37,6 +37,7 @@ const Database = () => {
   }, [data, temp]);
 
   //This is bad but but whatever
+  //I forgot why its bad but whatever
 
   const FetchData = async () => {
     try {
@@ -49,12 +50,13 @@ const Database = () => {
     }
   };
 
+  //Ieraksta dzēšanas funkcija
   const DeleteData = async id => {
     try {
-      await axios.delete(`${URL}/${table}/${id}`);
-      FetchData();
+      await axios.delete(`${URL}/${table}/${id}`); //Tiek nosūtīts delete pieprasijums uz doto saiti "Piemers saitei https://localhost:5001/administracija/1"
+      FetchData(); //Tiek izsaukta jauna datu ieguve lau varētu parādīt veiktās izmaiņas
     } catch (err) {
-      console.log(err);
+      console.log(err); //Kļūmes gadījumā kļūme tiek parādīta konsolē
     }
   };
 

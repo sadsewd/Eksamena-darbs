@@ -213,19 +213,25 @@ app.get('/popularakie', (req, res) => {
 app.post('/authClient', function (req, response) {
   const epasts = req.body.epasts;
   const parole = req.body.parole;
+  //Tiek atrasts pieprasijuma epasta un paroles vērtības, kuras tiek saglabātas mainīgos
   const jwtToken = jwt.sign({ lietotajvards: epasts }, process.env.JWT_KEY);
+  //Tiek izveidots token izmantojot lietotājvārdu
   if (epasts && parole) {
+    //Tiek izpildīts kverijs kur tiek pārbaudīts vai datubāze satur lietotāju ar iesūtītāo epastu un paroli
     db.query(
-      'SELECT * FROM lietotaji WHERE parole = ? AND epasts = ?',
-      [parole, epasts],
+      'SELECT * FROM lietotaji WHERE parole = ? AND epasts = ?', //Veicamais kverijs
+      [parole, epasts], //Meklējamās vērtības
       function (error, results, fields) {
-        if (error) throw error;
+        // pēc kverija izpildes veiktā funkcija
+        if (error) throw error; //Ja ir kļūdu, tā tiek atgriezta pieprasijuma sūtītājam
         if (results.length > 0) {
+          //Tiek skatīts vai kverijs atgriež lietotāja informāciju, ja atgriž tad tiek sūtīts token un lietotāja id atpakaļ
           response.send({ token: jwtToken, id: results[0].id });
         } else {
+          //Ja dati nepastāv vai arī nav konta kurš satur gan doto paroli gan doto epastu tad tiek atgriezta ziņa par nepareizu paroli un/vai epastu
           response.send('Nepareizs epasts un/vai parole!');
         }
-        response.end();
+        response.end(); //Atbildes beigas
       }
     );
   }

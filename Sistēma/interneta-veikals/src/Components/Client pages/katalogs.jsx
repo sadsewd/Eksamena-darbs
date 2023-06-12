@@ -17,19 +17,23 @@ const Katalogs = () => {
   const [searchTerm, setsearchTerm] = useState();
   const [filteredData, setfilteredData] = useState();
 
+  //Kataloga lapas pāraudes kuras tiek veiktas nomainot tīmekļa vietnes galapunktus
   useEffect(() => {
+    //Ja galapunkts ir tukšs katalogs, tad tiek rādīti visi produkti
     if (Object.keys(params).length === 0 && !location.pathname.includes('/katalogs/termins/')) {
-      setkatlogs(true);
+      setkatlogs(true); //Ja katalogs ir true tiek rādīti un iegūti visi produkti
       FetchData();
       setkategorija(false);
       setmeklesana(false);
       setfilteredData();
+      //Ja galapunkts ir satur meklēšanas terminu katalogs, tad tiek rādīti produkti kuru nosaukums satur meklēšanas terminu
     } else if (location.pathname.includes('/katalogs/termins/')) {
-      setmeklesana(true);
+      setmeklesana(true); //Ja meklēšana ir true tiek rādīti un iegūti produkti kuru nosaukums satur meklēšanas terminu
       FetchData();
       setsearchTerm(params.id);
       setkatlogs(false);
       setkategorija(false);
+      //Nākamais gadījums ir katolga filtrēšana pēc preces kategorijas
     } else {
       setfilteredData();
       setkategorija(true);

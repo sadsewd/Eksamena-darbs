@@ -30,23 +30,27 @@ const Edit = () => {
     }
   };
 
+  //Datu atjaunošanas funkcija
   const UpdataData = async () => {
     try {
-      await axios.put(`${URL}/${table}/${id}`, updateData);
-      navigate('/admin/database');
+      await axios.put(`${URL}/${table}/${id}`, updateData); //Tiek nosūtīti dati uz sistēmas servera pusi uz doto galapunktu
+      navigate('/admin/database'); //Kad dati ir nosūtīti lietotājs ir atgriezsts uz datubāzes sadaļu
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleSubmit = event => {
+    //Nospiežot pogu "Iesniegt" veiktā funkcija
     event.preventDefault();
-    const isEmpty = Object.values(data).every(x => x === '');
+    const isEmpty = Object.values(data).every(x => x === ''); //Tiek pārbaudīts vai objekta visas īpašības nav tukšas
     if (isEmpty) {
+      //Tiek ja ir īpašības satur tikai tukšumus, iesnegšana tiek atcelta, jo ja datus lietotājs vēlās dzēst, tas ir jādara caur dzēst pogu
       handleCancel();
     } else {
+      // Ja objekts satur vērtības tad tiek izveidots mainīgais kurš satur ievadlauku datus kuri tiek konvertēti uz x-www-form-urlencoded formātu
       updateData = new URLSearchParams(Object.entries(data)).toString();
-      UpdataData();
+      UpdataData(); //Tiek izsaukta datu atjaunošanas funkcija
     }
   };
 

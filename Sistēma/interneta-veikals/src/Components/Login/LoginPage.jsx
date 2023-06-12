@@ -9,12 +9,17 @@ import md5 from 'md5';
 import URL from '../../url';
 
 const LoginPage = () => {
+  //Ielogošanas vērtību mainīgie
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
+  //Saņemtās atbildes mainīgais
   const [msg, setmsg] = useState();
+  //Ielogošanās funkcija
   const signIn = useSignIn();
+  //Navigācijas funkcija
   const navigate = useNavigate();
 
+  //Funkcijas kuras tiek lietotas lai mainītu ielogošanās vērtības
   const handleUsernameInput = e => {
     setemail(e.target.value);
   };
@@ -22,13 +27,19 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
 
+  //Funkcija lietota kad tiek nospiesta poga "Ielogoties"
   const onSubmit = async () => {
+    //Tiek pārbaudīts vai ievadlauki nav tukši
     if (email !== '' && password !== '') {
+      //Tiek izveidota nosūtāmā informācija (Parole tiek šifrēta un tad tā tiek salīdzināta ar paroli servera pusē)
       let authInfo = { epasts: email, parole: md5(password) };
       authInfo = new URLSearchParams(Object.entries(authInfo)).toString();
       try {
+        //Dati tiek nosūtīti uz servera pusi
         const res = await axios.post(`${URL}/authClient`, authInfo);
+        //Ja serveris atgriež token un lietotāja id tad lietotājs tiek ielogots
         if (res.data.token !== undefined) {
+          //Šī funkcija izveido sesiju un saglabā dotots datus sīkdatnēs
           signIn({
             token: res.data.token,
             expiresIn: 60,
@@ -39,14 +50,17 @@ const LoginPage = () => {
               userid: res.data.id,
             },
           });
+          //Lietotājs tiek aizvests uz mājas sadaļu
           navigate('/');
         } else {
+          //Ja dati ir nepareizi tiks parādīts dotais paziņojums
           setmsg('Nepareizs epasts un/vai parole!');
         }
       } catch (err) {
         console.log(err);
       }
     } else {
+      //Ja ievadlauki ir tukši tiks parādīts dotais paziņojums
       setmsg('Nav ievadīta vajadzīgā informācija!');
     }
   };
